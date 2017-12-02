@@ -15,19 +15,22 @@ fn main() {
 fn run(spreadsheet: &String) -> i32 {
   let rows = spreadsheet.split("\n");
 
-  rows.map(|row| {
-    let data = row.split_whitespace()
-                  .filter_map(|e| e.parse().ok())
-                  .collect::<Vec<i32>>();
-    let iter = data.iter();
+  rows
+    .map(|row| {
+      let data = row
+        .split_whitespace()
+        .filter_map(|e| e.parse().ok())
+        .collect::<Vec<i32>>();
+      let iter = data.iter();
 
-    for x in iter.clone() {
-      for y in iter.clone() {
-        if x != y && x % y == 0 {
-          return x / y;
+      for x in iter.clone() {
+        for y in iter.clone() {
+          if x != y && x % y == 0 {
+            return x / y;
+          }
         }
       }
-    }
-    0
-  }).sum()
+      0
+    })
+    .sum()
 }

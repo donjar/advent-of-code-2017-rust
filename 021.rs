@@ -15,11 +15,14 @@ fn main() {
 fn run(spreadsheet: &String) -> i32 {
   let rows = spreadsheet.split("\n");
 
-  rows.map(|row| {
-    let data = row.split_whitespace()
-                  .filter_map(|e| e.parse().ok())
-                  .collect::<Vec<i32>>();
-    let iter = data.iter();
-    iter.clone().max().unwrap() - iter.min().unwrap()
-  }).sum()
+  rows
+    .map(|row| {
+      let data = row
+        .split_whitespace()
+        .filter_map(|e| e.parse().ok())
+        .collect::<Vec<i32>>();
+      let iter = data.iter();
+      iter.clone().max().unwrap() - iter.min().unwrap()
+    })
+    .sum()
 }
