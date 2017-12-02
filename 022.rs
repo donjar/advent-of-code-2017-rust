@@ -20,6 +20,14 @@ fn run(spreadsheet: &String) -> i32 {
                   .filter_map(|e| e.parse().ok())
                   .collect::<Vec<i32>>();
     let iter = data.iter();
-    iter.clone().max().unwrap() - iter.min().unwrap()
+
+    for x in iter.clone() {
+      for y in iter.clone() {
+        if x != y && x % y == 0 {
+          return x / y;
+        }
+      }
+    }
+    0
   }).sum()
 }
