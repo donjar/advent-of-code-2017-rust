@@ -1,0 +1,26 @@
+use std::fs::File;
+use std::io::Read;
+
+fn main() {
+  let input_file = "input2";
+
+  let mut file = File::open(input_file).expect("File not found");
+  let mut contents = String::new();
+  file.read_to_string(&mut contents).expect("File read error");
+  contents.pop(); // remove last char newline
+
+  println!("{}", run(&contents));
+}
+
+fn run(spreadsheet: &String) -> i32 {
+  let rows = spreadsheet.split("\n");
+
+  rows.map(|row| {
+    let data = row.split_whitespace()
+                  .map(|e| e.parse::<i32>())
+                  .filter_map(Result::ok)
+                  .collect::<Vec<i32>>();
+    let iter = data.iter();
+    iter.clone().max().unwrap() - iter.min().unwrap()
+  }).sum()
+}
