@@ -1,18 +1,11 @@
-use std::fs::File;
-use std::io::Read;
-
 fn main() {
-  let input_file = "input2";
+  let input = include_str!("input2");
+  let trimmed_input = &input[..input.len() - 1];
 
-  let mut file = File::open(input_file).expect("File not found");
-  let mut contents = String::new();
-  file.read_to_string(&mut contents).expect("File read error");
-  contents.pop(); // remove last char newline
-
-  println!("{}", run(&contents));
+  println!("{}", run(trimmed_input));
 }
 
-fn run(spreadsheet: &String) -> i32 {
+fn run(spreadsheet: &str) -> i32 {
   let rows = spreadsheet.split("\n");
 
   rows
