@@ -3,3 +3,4 @@
 !*.rs
 !LICENSE
 !README.md
+!rustfmt.toml
