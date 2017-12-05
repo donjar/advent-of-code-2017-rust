@@ -1,0 +1,10 @@
+echo "Running 011"; diff <(echo 1177) <(rustc 011.rs && ./011) > /dev/null || echo "011 fail"; rm 011
+echo "Running 012"; diff <(echo 1060) <(rustc 012.rs && ./012) > /dev/null || echo "012 fail"; rm 012
+echo "Running 021"; diff <(echo 21845) <(rustc 021.rs && ./021) > /dev/null || echo "021 fail"; rm 021
+echo "Running 022"; diff <(echo 191) <(rustc 022.rs && ./022) > /dev/null || echo "022 fail"; rm 022
+echo "Running 031"; diff <(echo 552) <(rustc 031.rs && ./031) > /dev/null || echo "031 fail"; rm 031
+echo "Running 032"; diff <(echo 330785) <(rustc 032.rs && ./032) > /dev/null || echo "032 fail"; rm 032
+echo "Running 041"; diff <(echo 477) <(rustc 041.rs && ./041) > /dev/null || echo "041 fail"; rm 041
+echo "Running 042"; diff <(echo 167) <(rustc 042.rs && ./042) > /dev/null || echo "042 fail"; rm 042
+echo "Running 051"; diff <(echo 381680) <(rustc 051.rs && ./051) > /dev/null || echo "051 fail"; rm 051
+echo "Running 052"; diff <(echo 29717847) <(rustc 052.rs && ./052) > /dev/null || echo "052 fail"; rm 052
