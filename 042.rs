@@ -8,7 +8,7 @@ fn main() {
 }
 
 fn run(passphrases: &str) -> u32 {
-  let lines = passphrases.split("\n");
+  let lines = passphrases.lines();
 
   lines
     .map(|passphrase| {

@@ -7,7 +7,7 @@ fn main() {
 
 fn run(instructions: &str) -> i32 {
   let mut ins = instructions
-    .split("\n")
+    .lines()
     .filter_map(|s| s.parse().ok())
     .collect::<Vec<i32>>();
   let mut pos: i32 = 0;

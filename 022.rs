@@ -6,7 +6,7 @@ fn main() {
 }
 
 fn run(spreadsheet: &str) -> i32 {
-  let rows = spreadsheet.split("\n");
+  let rows = spreadsheet.lines();
 
   rows
     .map(|row| {
