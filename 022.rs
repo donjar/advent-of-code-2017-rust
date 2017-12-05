@@ -1,6 +1,6 @@
 fn main() {
   let input = include_str!("input2");
-  let trimmed_input = &input[..input.len() - 1];
+  let trimmed_input = &input[..input.len() - 1]; // remove last newline
 
   println!("{}", run(trimmed_input));
 }
