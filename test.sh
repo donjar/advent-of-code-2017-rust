@@ -8,3 +8,4 @@ echo "Running 041"; diff <(echo 477) <(rustc 041.rs && ./041) > /dev/null || ech
 echo "Running 042"; diff <(echo 167) <(rustc 042.rs && ./042) > /dev/null || echo "042 fail"; rm 042
 echo "Running 051"; diff <(echo 381680) <(rustc 051.rs && ./051) > /dev/null || echo "051 fail"; rm 051
 echo "Running 052"; diff <(echo 29717847) <(rustc 052.rs && ./052) > /dev/null || echo "052 fail"; rm 052
+echo "Running 061"; diff <(echo 5042) <(rustc 061.rs && ./061) > /dev/null || echo "061 fail"; rm 061
