@@ -2,34 +2,15 @@ use std::collections::HashMap;
 
 pub fn no1() -> i32 {
   let input = include_str!("../inputs/input6").trim();
-  run1(input)
+  run(input, true)
 }
 
 pub fn no2() -> i32 {
   let input = include_str!("../inputs/input6").trim();
-  run2(input)
+  run(input, false)
 }
 
-fn run1(blocks: &str) -> i32 {
-  let mut pos = blocks
-    .split_whitespace()
-    .filter_map(|s| s.parse().ok())
-    .collect::<Vec<i32>>();
-  let mut step = 0;
-  let mut collection = HashMap::new();
-
-  loop {
-    if collection.get(&pos).cloned().is_some() {
-      return step;
-    } else {
-      collection.insert(pos.clone(), step);
-      step += 1;
-      distribute(&mut pos);
-    }
-  }
-}
-
-fn run2(blocks: &str) -> i32 {
+fn run(blocks: &str, find_position: bool) -> i32 {
   let mut pos = blocks
     .split_whitespace()
     .filter_map(|s| s.parse().ok())
@@ -39,7 +20,7 @@ fn run2(blocks: &str) -> i32 {
 
   loop {
     if let Some(s) = collection.get(&pos).cloned() {
-      return step - s;
+      if find_position { return step; } else { return step - s; }
     } else {
       collection.insert(pos.clone(), step);
       step += 1;
