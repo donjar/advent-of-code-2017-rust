@@ -35,7 +35,11 @@ fn run(blocks: &str, find_position: bool) -> i32 {
 
   loop {
     if let Some(s) = collection.get(&pos).cloned() {
-      if find_position { return step; } else { return step - s; }
+      if find_position {
+        return step;
+      } else {
+        return step - s;
+      }
     } else {
       collection.insert(pos.clone(), step);
       step += 1;
