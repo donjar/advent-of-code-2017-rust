@@ -1,8 +1,1 @@
-*
-!.gitignore
-!*.rs
-!LICENSE
-!README.md
-!rustfmt.toml
-!input*
-!test.sh
+target

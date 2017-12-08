@@ -1,6 +1,11 @@
-fn main() {
-  let input = include_str!("input1").trim();
-  println!("{}", run(input, input.len() / 2));
+pub fn no1() -> u32 {
+  let input = include_str!("../inputs/input1").trim();
+  run(input, 1)
+}
+
+pub fn no2() -> u32 {
+  let input = include_str!("../inputs/input1").trim();
+  run(input, input.len() / 2)
 }
 
 fn run(captcha: &str, next_idx: usize) -> u32 {
