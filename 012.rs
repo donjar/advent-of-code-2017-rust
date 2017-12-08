@@ -1,8 +1,6 @@
 fn main() {
-  let input = include_str!("input1");
-  let trimmed_input = &input[..input.len() - 1]; // remove last newline
-
-  println!("{}", run(trimmed_input, trimmed_input.len() / 2));
+  let input = include_str!("input1").trim();
+  println!("{}", run(input, input.len() / 2));
 }
 
 fn run(captcha: &str, next_idx: usize) -> u32 {

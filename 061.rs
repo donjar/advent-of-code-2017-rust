@@ -1,10 +1,8 @@
 use std::collections::HashMap;
 
 fn main() {
-  let input = include_str!("input6");
-  let trimmed_input = &input[..input.len() - 1]; // remove last newline
-
-  println!("{}", run(trimmed_input));
+  let input = include_str!("input6").trim();
+  println!("{}", run(input));
 }
 
 fn run(blocks: &str) -> i32 {

@@ -1,8 +1,6 @@
 fn main() {
-  let input = include_str!("input2");
-  let trimmed_input = &input[..input.len() - 1]; // remove last newline
-
-  println!("{}", run(trimmed_input));
+  let input = include_str!("input2").trim();
+  println!("{}", run(input));
 }
 
 fn run(spreadsheet: &str) -> i32 {

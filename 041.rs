@@ -1,10 +1,8 @@
 use std::collections::HashSet;
 
 fn main() {
-  let input = include_str!("input4");
-  let trimmed_input = &input[..input.len() - 1]; // remove last newline
-
-  println!("{}", run(trimmed_input));
+  let input = include_str!("input4").trim();
+  println!("{}", run(input));
 }
 
 fn run(passphrases: &str) -> u32 {
