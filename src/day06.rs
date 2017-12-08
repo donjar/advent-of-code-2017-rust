@@ -1,11 +1,35 @@
 use std::collections::HashMap;
 
-fn main() {
-  let input = include_str!("input6").trim();
-  println!("{}", run(input));
+pub fn no1() -> i32 {
+  let input = include_str!("../inputs/input6").trim();
+  run1(input)
 }
 
-fn run(blocks: &str) -> i32 {
+pub fn no2() -> i32 {
+  let input = include_str!("../inputs/input6").trim();
+  run2(input)
+}
+
+fn run1(blocks: &str) -> i32 {
+  let mut pos = blocks
+    .split_whitespace()
+    .filter_map(|s| s.parse().ok())
+    .collect::<Vec<i32>>();
+  let mut step = 0;
+  let mut collection = HashMap::new();
+
+  loop {
+    if collection.get(&pos).cloned().is_some() {
+      return step;
+    } else {
+      collection.insert(pos.clone(), step);
+      step += 1;
+      distribute(&mut pos);
+    }
+  }
+}
+
+fn run2(blocks: &str) -> i32 {
   let mut pos = blocks
     .split_whitespace()
     .filter_map(|s| s.parse().ok())

@@ -1,4 +1,9 @@
 mod day01;
+mod day02;
+mod day03;
+mod day04;
+mod day05;
+mod day06;
 
 use std::env;
 use std::process::exit;
@@ -16,12 +21,24 @@ fn main() {
       match (day, no) {
         (1, 1) => println!("{}", day01::no1()),
         (1, 2) => println!("{}", day01::no2()),
+        (2, 1) => println!("{}", day02::no1()),
+        (2, 2) => println!("{}", day02::no2()),
+        (3, 1) => println!("{}", day03::no1()),
+        (3, 2) => println!("{}", day03::no2()),
+        (4, 1) => println!("{}", day04::no1()),
+        (4, 2) => println!("{}", day04::no2()),
+        (5, 1) => println!("{}", day05::no1()),
+        (5, 2) => println!("{}", day05::no2()),
+        (6, 1) => println!("{}", day06::no1()),
+        (6, 2) => println!("{}", day06::no2()),
         _ => println!("Day {} number {} not found", day, no),
       }
     } else {
       println!("No is invalid");
+      exit(1);
     }
   } else {
     println!("Day is invalid");
+    exit(1);
   }
 }
