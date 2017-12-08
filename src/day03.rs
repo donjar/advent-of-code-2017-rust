@@ -1,5 +1,20 @@
 use std::collections::HashMap;
 
+#[cfg(test)]
+mod tests {
+  use super::*;
+
+  #[test]
+  fn no1_test() {
+    assert_eq!(552, no1());
+  }
+
+  #[test]
+  fn no2_test() {
+    assert_eq!(330785, no2());
+  }
+}
+
 pub fn no1() -> i32 {
   let input = 325489;
   run1(input)

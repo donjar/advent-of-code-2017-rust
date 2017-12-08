@@ -1,3 +1,18 @@
+#[cfg(test)]
+mod tests {
+  use super::*;
+
+  #[test]
+  fn no1_test() {
+    assert_eq!(21845, no1());
+  }
+
+  #[test]
+  fn no2_test() {
+    assert_eq!(191, no2());
+  }
+}
+
 pub fn no1() -> i32 {
   let input = include_str!("../inputs/input2").trim();
   run1(input)
