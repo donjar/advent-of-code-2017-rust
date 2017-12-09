@@ -8,6 +8,42 @@ mod tests {
   use super::*;
 
   #[test]
+  fn no1_sample_test() {
+    let input = indoc!("pbga (66)
+                        xhth (57)
+                        ebii (61)
+                        havc (66)
+                        ktlj (57)
+                        fwft (72) -> ktlj, cntj, xhth
+                        qoyq (66)
+                        padx (45) -> pbga, havc, qoyq
+                        tknk (41) -> ugml, padx, fwft
+                        jptl (61)
+                        ugml (68) -> gyxo, ebii, jptl
+                        gyxo (61)
+                        cntj (57)");
+    assert_eq!("tknk", run1(input));
+  }
+
+  #[test]
+  fn no2_sample_test() {
+    let input = indoc!("pbga (66)
+                        xhth (57)
+                        ebii (61)
+                        havc (66)
+                        ktlj (57)
+                        fwft (72) -> ktlj, cntj, xhth
+                        qoyq (66)
+                        padx (45) -> pbga, havc, qoyq
+                        tknk (41) -> ugml, padx, fwft
+                        jptl (61)
+                        ugml (68) -> gyxo, ebii, jptl
+                        gyxo (61)
+                        cntj (57)");
+    assert_eq!(8, run2(input));
+  }
+
+  #[test]
   fn no1_test() {
     assert_eq!("hlqnsbe", no1());
   }

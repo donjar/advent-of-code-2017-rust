@@ -5,6 +5,18 @@ mod tests {
   use super::*;
 
   #[test]
+  fn no1_sample_test() {
+    let input = "0\n3\n0\n1\n-3";
+    assert_eq!(5, run(input, false));
+  }
+
+  #[test]
+  fn no2_sample_test() {
+    let input = "0\n3\n0\n1\n-3";
+    assert_eq!(10, run(input, true));
+  }
+
+  #[test]
   fn no1_test() {
     assert_eq!(381680, no1());
   }

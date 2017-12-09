@@ -5,6 +5,24 @@ mod tests {
   use super::*;
 
   #[test]
+  fn no1_sample_test() {
+    let input = indoc!("aa bb cc dd ee
+                        aa bb cc dd aa
+                        aa bb cc dd aaa");
+    assert_eq!(2, run1(input));
+  }
+
+  #[test]
+  fn no2_sample_test() {
+    let input = indoc!("abcde fghij
+                        abcde xyz ecdab
+                        a ab abc abd abf abj
+                        iiii oiii ooii oooi oooo
+                        oiii ioii iioi iiio");
+    assert_eq!(3, run2(input));
+  }
+
+  #[test]
   fn no1_test() {
     assert_eq!(477, no1());
   }

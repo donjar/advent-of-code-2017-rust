@@ -6,6 +6,18 @@ mod tests {
   use super::*;
 
   #[test]
+  fn no1_sample_test() {
+    let input = "0 2 7 0";
+    assert_eq!(5, run(input, true));
+  }
+
+  #[test]
+  fn no2_sample_test() {
+    let input = "0 2 7 0";
+    assert_eq!(4, run(input, false));
+  }
+
+  #[test]
   fn no1_test() {
     assert_eq!(5042, no1());
   }

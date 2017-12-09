@@ -3,6 +3,23 @@ mod tests {
   use super::*;
 
   #[test]
+  fn no1_sample_test() {
+    assert_eq!(3, run("1122", 1));
+    assert_eq!(4, run("1111", 1));
+    assert_eq!(0, run("1234", 1));
+    assert_eq!(9, run("91212129", 1));
+  }
+
+  #[test]
+  fn no2_sample_test() {
+    assert_eq!(6, run("1212", 2));
+    assert_eq!(0, run("1221", 2));
+    assert_eq!(4, run("123425", 3));
+    assert_eq!(12, run("123123", 3));
+    assert_eq!(4, run("12131415", 4));
+  }
+
+  #[test]
   fn no1_test() {
     assert_eq!(1177, no1());
   }

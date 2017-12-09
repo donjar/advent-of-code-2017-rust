@@ -5,6 +5,22 @@ mod tests {
   use super::*;
 
   #[test]
+  fn no1_sample_test() {
+    assert_eq!(0, run1(1));
+    assert_eq!(3, run1(12));
+    assert_eq!(2, run1(23));
+    assert_eq!(31, run1(1024));
+  }
+
+  #[test]
+  fn no2_sample_test() {
+    assert_eq!(1, run2(0));
+    assert_eq!(23, run2(12));
+    assert_eq!(25, run2(24));
+    assert_eq!(747, run2(380));
+  }
+
+  #[test]
   fn no1_test() {
     assert_eq!(552, no1());
   }

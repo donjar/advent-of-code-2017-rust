@@ -1,20 +1,37 @@
-use std::collections::HashMap;
 use regex::Regex;
+use std::cmp;
+use std::collections::HashMap;
 
 #[cfg(test)]
 mod tests {
   use super::*;
 
-  #[ignore]
   #[test]
-  fn no1_test() {
-    assert_eq!(5042, no1());
+  fn no1_sample_test() {
+    let input = indoc!("b inc 5 if a > 1
+                        a inc 1 if b < 5
+                        c dec -10 if a >= 1
+                        c inc -20 if c == 10");
+    assert_eq!(1, run1(input));
   }
 
-  #[ignore]
+  #[test]
+  fn no2_sample_test() {
+    let input = indoc!("b inc 5 if a > 1
+                        a inc 1 if b < 5
+                        c dec -10 if a >= 1
+                        c inc -20 if c == 10");
+    assert_eq!(10, run2(input));
+  }
+
+  #[test]
+  fn no1_test() {
+    assert_eq!(5849, no1());
+  }
+
   #[test]
   fn no2_test() {
-    assert_eq!(1086, no2());
+    assert_eq!(6702, no2());
   }
 }
 
@@ -25,7 +42,7 @@ pub fn no1() -> i32 {
 
 pub fn no2() -> i32 {
   let input = include_str!("../inputs/input8").trim();
-  0
+  run2(input)
 }
 
 fn run1(program: &str) -> i32 {
@@ -35,7 +52,19 @@ fn run1(program: &str) -> i32 {
     cpu.run(ins);
   }
 
-  *cpu.registers.values().max().unwrap()
+  cpu.get_max()
+}
+
+fn run2(program: &str) -> i32 {
+  let mut cpu = Cpu::new();
+  let mut max = 0;
+
+  for ins in program.lines() {
+    cpu.run(ins);
+    max = cmp::max(max, cpu.get_max());
+  }
+
+  max
 }
 
 struct Cpu {
@@ -105,5 +134,9 @@ impl Cpu {
     }
     assert!(false);
     false
+  }
+
+  fn get_max(&self) -> i32 {
+    *self.registers.values().max().unwrap()
   }
 }
