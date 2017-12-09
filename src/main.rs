@@ -1,4 +1,5 @@
 extern crate regex;
+#[macro_use] extern crate lazy_static;
 
 mod helper;
 
@@ -9,6 +10,7 @@ mod day04;
 mod day05;
 mod day06;
 //mod day07;
+mod day08;
 
 use std::env;
 use std::process::exit;
@@ -38,6 +40,8 @@ fn main() {
         (6, 2) => println!("{}", day06::no2()),
         // (7, 1) => println!("{}", day07::no1()),
         // (7, 2) => println!("{}", day07::no2()),
+        (8, 1) => println!("{}", day08::no1()),
+        (8, 2) => println!("{}", day08::no2()),
         _ => println!("Day {} number {} not found", day, no),
       }
     } else {
