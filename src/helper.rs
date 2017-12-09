@@ -1,12 +1,14 @@
+use std::str::FromStr;
+
 pub trait StringExt {
-  fn split_into_data(&self) -> Vec<i32>;
+  fn split_into_data<T: FromStr>(&self) -> Vec<T>;
 }
 
-impl StringExt for String {
-  fn split_into_data(&self) -> Vec<i32> {
+impl<'a> StringExt for &'a str {
+  fn split_into_data<T: FromStr>(&self) -> Vec<T> {
     self
       .split_whitespace()
       .filter_map(|e| e.parse().ok())
-      .collect::<Vec<i32>>()
+      .collect::<Vec<T>>()
   }
 }

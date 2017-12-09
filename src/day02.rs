@@ -1,3 +1,5 @@
+use helper::StringExt;
+
 #[cfg(test)]
 mod tests {
   use super::*;
@@ -28,10 +30,7 @@ fn run1(spreadsheet: &str) -> i32 {
 
   rows
     .map(|row| {
-      let data = row
-        .split_whitespace()
-        .filter_map(|e| e.parse().ok())
-        .collect::<Vec<i32>>();
+      let data = row.split_into_data::<i32>();
       let iter = data.iter();
       iter.clone().max().unwrap() - iter.min().unwrap()
     })
@@ -43,10 +42,7 @@ fn run2(spreadsheet: &str) -> i32 {
 
   rows
     .map(|row| {
-      let data = row
-        .split_whitespace()
-        .filter_map(|e| e.parse().ok())
-        .collect::<Vec<i32>>();
+      let data = row.split_into_data::<i32>();
       let iter = data.iter();
 
       for x in iter.clone() {

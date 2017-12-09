@@ -1,3 +1,4 @@
+use helper::StringExt;
 use std::collections::HashMap;
 
 #[cfg(test)]
@@ -26,10 +27,7 @@ pub fn no2() -> i32 {
 }
 
 fn run(blocks: &str, find_position: bool) -> i32 {
-  let mut pos = blocks
-    .split_whitespace()
-    .filter_map(|s| s.parse().ok())
-    .collect::<Vec<i32>>();
+  let mut pos = blocks.split_into_data::<i32>();
   let mut step = 0;
   let mut collection = HashMap::new();
 

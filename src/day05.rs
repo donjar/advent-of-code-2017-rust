@@ -1,3 +1,5 @@
+use helper::StringExt;
+
 #[cfg(test)]
 mod tests {
   use super::*;
@@ -24,10 +26,7 @@ pub fn no2() -> i32 {
 }
 
 fn run(instructions: &str, type2: bool) -> i32 {
-  let mut ins = instructions
-    .lines()
-    .filter_map(|s| s.parse().ok())
-    .collect::<Vec<i32>>();
+  let mut ins = instructions.split_into_data::<i32>();
   let mut pos: i32 = 0;
   let mut steps = 0;
 
