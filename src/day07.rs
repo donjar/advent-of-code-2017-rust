@@ -9,37 +9,41 @@ mod tests {
 
   #[test]
   fn no1_sample_test() {
-    let input = indoc!("pbga (66)
-                        xhth (57)
-                        ebii (61)
-                        havc (66)
-                        ktlj (57)
-                        fwft (72) -> ktlj, cntj, xhth
-                        qoyq (66)
-                        padx (45) -> pbga, havc, qoyq
-                        tknk (41) -> ugml, padx, fwft
-                        jptl (61)
-                        ugml (68) -> gyxo, ebii, jptl
-                        gyxo (61)
-                        cntj (57)");
+    let input = indoc!(
+      "pbga (66)
+       xhth (57)
+       ebii (61)
+       havc (66)
+       ktlj (57)
+       fwft (72) -> ktlj, cntj, xhth
+       qoyq (66)
+       padx (45) -> pbga, havc, qoyq
+       tknk (41) -> ugml, padx, fwft
+       jptl (61)
+       ugml (68) -> gyxo, ebii, jptl
+       gyxo (61)
+       cntj (57)"
+    );
     assert_eq!("tknk", run1(input));
   }
 
   #[test]
   fn no2_sample_test() {
-    let input = indoc!("pbga (66)
-                        xhth (57)
-                        ebii (61)
-                        havc (66)
-                        ktlj (57)
-                        fwft (72) -> ktlj, cntj, xhth
-                        qoyq (66)
-                        padx (45) -> pbga, havc, qoyq
-                        tknk (41) -> ugml, padx, fwft
-                        jptl (61)
-                        ugml (68) -> gyxo, ebii, jptl
-                        gyxo (61)
-                        cntj (57)");
+    let input = indoc!(
+      "pbga (66)
+       xhth (57)
+       ebii (61)
+       havc (66)
+       ktlj (57)
+       fwft (72) -> ktlj, cntj, xhth
+       qoyq (66)
+       padx (45) -> pbga, havc, qoyq
+       tknk (41) -> ugml, padx, fwft
+       jptl (61)
+       ugml (68) -> gyxo, ebii, jptl
+       gyxo (61)
+       cntj (57)"
+    );
     assert_eq!(8, run2(input));
   }
 
@@ -93,16 +97,22 @@ struct Program {
   children: Vec<Program>,
   parent: Option<Box<Program>>,
   weight: i32,
-  sum: i32
+  sum: i32,
 }
 
 struct ProgramSystem {
-  programs: HashMap<String, Program>
+  programs: HashMap<String, Program>,
 }
 
 impl Program {
   fn empty_program(name: String) -> Program {
-    Program { name, children: Vec::new(), parent: None, weight: 0, sum: 0 }
+    Program {
+      name,
+      children: Vec::new(),
+      parent: None,
+      weight: 0,
+      sum: 0,
+    }
   }
 }
 
@@ -137,7 +147,11 @@ impl ProgramSystem {
       p.weight = weight;
     } else {
       let program = Program {
-        name, children: Vec::new(), parent: None, weight, sum: 0
+        name,
+        children: Vec::new(),
+        parent: None,
+        weight,
+        sum: 0,
       };
       self.programs.insert(name, program);
     }

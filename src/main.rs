@@ -1,6 +1,9 @@
 extern crate regex;
-#[macro_use] extern crate lazy_static;
-#[cfg(test)] #[macro_use] extern crate indoc;
+#[macro_use]
+extern crate lazy_static;
+#[cfg(test)]
+#[macro_use]
+extern crate indoc;
 
 mod helper;
 

@@ -54,13 +54,11 @@ fn run1(stream: &str) -> i32 {
   let mut i = 0;
   while i < stream.len() {
     match stream.as_bytes()[i] as char {
-      '{' => if !is_garbage { level += 1 },
-      '}' => {
-        if !is_garbage {
-          score += level;
-          level -= 1;
-        }
-      },
+      '{' if !is_garbage => level += 1,
+      '}' if !is_garbage => {
+        score += level;
+        level -= 1;
+      }
       '<' => is_garbage = true,
       '>' => is_garbage = false,
       '!' => i += 1,
@@ -88,9 +86,8 @@ fn run2(stream: &str) -> i32 {
       }
       '>' => is_garbage = false,
       '!' => i += 1,
-      _ => {
-        if is_garbage { count += 1; }
-      }
+      _ if is_garbage => count += 1,
+      _ => (),
     }
     i += 1;
   }

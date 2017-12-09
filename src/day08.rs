@@ -8,19 +8,23 @@ mod tests {
 
   #[test]
   fn no1_sample_test() {
-    let input = indoc!("b inc 5 if a > 1
-                        a inc 1 if b < 5
-                        c dec -10 if a >= 1
-                        c inc -20 if c == 10");
+    let input = indoc!(
+      "b inc 5 if a > 1
+       a inc 1 if b < 5
+       c dec -10 if a >= 1
+       c inc -20 if c == 10"
+    );
     assert_eq!(1, run1(input));
   }
 
   #[test]
   fn no2_sample_test() {
-    let input = indoc!("b inc 5 if a > 1
-                        a inc 1 if b < 5
-                        c dec -10 if a >= 1
-                        c inc -20 if c == 10");
+    let input = indoc!(
+      "b inc 5 if a > 1
+       a inc 1 if b < 5
+       c dec -10 if a >= 1
+       c inc -20 if c == 10"
+    );
     assert_eq!(10, run2(input));
   }
 
@@ -106,13 +110,14 @@ impl Cpu {
   }
 
   fn run_raw(&mut self, register: &str, increment: i32, condition: &str) {
-    if self.parse_condition(condition) {
-      let val = *self.registers.entry(register.to_string()).or_insert(0) + increment;
+    if self.parse_condition(condition) == Ok(true) {
+      let val = *self.registers.entry(register.to_string()).or_insert(0) +
+        increment;
       self.registers.insert(register.to_string(), val);
     }
   }
 
-  fn parse_condition(&mut self, condition: &str) -> bool {
+  fn parse_condition(&mut self, condition: &str) -> Result<bool, ()> {
     lazy_static! {
       static ref RE: Regex = Regex::new(r"^(.*) (.*) (.*)$").unwrap();
     }
@@ -120,23 +125,25 @@ impl Cpu {
     for captures in RE.captures_iter(condition) {
       let lhs = *self.registers.entry(captures[1].to_string()).or_insert(0);
       let operator = &captures[2];
+      if let Err(_) = captures[3].parse::<i32>() {
+        return Err(());
+      }
       let rhs = captures[3].parse::<i32>().unwrap();
 
       match operator {
-        ">=" => return lhs >= rhs,
-        ">" => return lhs > rhs,
-        "<=" => return lhs <= rhs,
-        "<" => return lhs < rhs,
-        "==" => return lhs == rhs,
-        "!=" => return lhs != rhs,
-        _ => assert!(false),
+        ">=" => return Ok(lhs >= rhs),
+        ">" => return Ok(lhs > rhs),
+        "<=" => return Ok(lhs <= rhs),
+        "<" => return Ok(lhs < rhs),
+        "==" => return Ok(lhs == rhs),
+        "!=" => return Ok(lhs != rhs),
+        _ => return Err(()),
       }
     }
-    assert!(false);
-    false
+    Err(())
   }
 
   fn get_max(&self) -> i32 {
-    *self.registers.values().max().unwrap()
+    cmp::max(0, *self.registers.values().max().unwrap_or(&0))
   }
 }
