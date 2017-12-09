@@ -1,3 +1,5 @@
+extern crate regex;
+
 mod helper;
 
 mod day01;
@@ -6,6 +8,7 @@ mod day03;
 mod day04;
 mod day05;
 mod day06;
+//mod day07;
 
 use std::env;
 use std::process::exit;
@@ -33,6 +36,8 @@ fn main() {
         (5, 2) => println!("{}", day05::no2()),
         (6, 1) => println!("{}", day06::no1()),
         (6, 2) => println!("{}", day06::no2()),
+        // (7, 1) => println!("{}", day07::no1()),
+        // (7, 2) => println!("{}", day07::no2()),
         _ => println!("Day {} number {} not found", day, no),
       }
     } else {
