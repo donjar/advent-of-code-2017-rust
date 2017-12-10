@@ -44,19 +44,15 @@ fn run1(list_size: i32, lengths: &str) -> i32 {
 }
 
 fn run2(lengths: &str) -> String {
-  let mut lens: Vec<usize> = lengths
-    .as_bytes()
-    .into_iter()
-    .map(|&i| i as usize)
-    .collect();
-  lens.append(&mut vec![17, 31, 73, 47, 23]);
+  let lens = [lengths.as_bytes(), &[17, 31, 73, 47, 23]].concat();
+  let usize_lens: Vec<usize> = lens.iter().map(|&i| i as usize).collect();
 
   let mut vec: Vec<i32> = (0..256).collect();
   let mut pointer = 0;
   let mut skip = 0;
 
   for _ in 0..64 {
-    knot(&mut vec, lens.iter().cloned(), &mut pointer, &mut skip);
+    knot(&mut vec, usize_lens.iter().cloned(), &mut pointer, &mut skip);
   }
 
   vec.chunks(16).fold(String::new(), |text, chunk| {
