@@ -60,12 +60,12 @@ mod tests {
 }
 
 pub fn no1() -> String {
-  let input = include_str!("../inputs/input7").trim();
+  let input = include_str!("../inputs/input07").trim();
   run1(input)
 }
 
 pub fn no2() -> i32 {
-  let input = include_str!("../inputs/input7").trim();
+  let input = include_str!("../inputs/input07").trim();
   0
 }
 

@@ -38,12 +38,12 @@ mod tests {
 }
 
 pub fn no1() -> i32 {
-  let input = include_str!("../inputs/input4").trim();
+  let input = include_str!("../inputs/input04").trim();
   run1(input)
 }
 
 pub fn no2() -> i32 {
-  let input = include_str!("../inputs/input4").trim();
+  let input = include_str!("../inputs/input04").trim();
   run2(input)
 }
 
