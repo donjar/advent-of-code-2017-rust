@@ -16,6 +16,7 @@ mod day06;
 //mod day07;
 mod day08;
 mod day09;
+mod day10;
 
 use std::env;
 use std::process::exit;
@@ -49,6 +50,8 @@ fn main() {
         (8, 2) => println!("{}", day08::no2()),
         (9, 1) => println!("{}", day09::no1()),
         (9, 2) => println!("{}", day09::no2()),
+        (10, 1) => println!("{}", day10::no1()),
+        (10, 2) => println!("{}", day10::no2()),
         _ => println!("Day {} number {} not found", day, no),
       }
     } else {
