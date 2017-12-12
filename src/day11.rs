@@ -71,18 +71,22 @@ fn next(dir: &str, x: &mut i32, y: &mut i32) {
   match dir {
     "n" => *y += 2,
     "ne" => {
-      *x += 1; *y += 1
-    },
+      *x += 1;
+      *y += 1
+    }
     "se" => {
-      *x += 1; *y -= 1
-    },
+      *x += 1;
+      *y -= 1
+    }
     "s" => *y -= 2,
     "nw" => {
-      *x -= 1; *y += 1
-    },
+      *x -= 1;
+      *y += 1
+    }
     "sw" => {
-      *x -= 1; *y -= 1
-    },
-    _ => panic!(format!("Found {}", dir))
+      *x -= 1;
+      *y -= 1
+    }
+    _ => panic!(format!("Found {}", dir)),
   }
 }
