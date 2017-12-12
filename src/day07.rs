@@ -93,19 +93,19 @@ fn run2(list: &str) -> i32 {
 }
 
 #[derive(PartialEq, Eq, Hash)]
-struct Program {
+struct Program<'a> {
   name: String,
-  children: Vec<Program>,
+  children: Vec<&'a Program<'a>>,
   weight: i32,
   sum: i32,
 }
 
-struct ProgramSystem {
-  programs: HashMap<String, Program>,
+struct ProgramSystem<'a> {
+  programs: HashMap<String, Program<'a>>,
 }
 
-impl Program {
-  fn empty_program(name: String) -> Program {
+impl<'a> Program<'a> {
+  fn empty_program(name: String) -> Program<'a> {
     Program {
       name,
       children: Vec::new(),
@@ -115,7 +115,7 @@ impl Program {
   }
 }
 
-impl ProgramSystem {
+impl<'a> ProgramSystem<'a> {
   fn get_roots(&self) -> HashSet<&Program> {
     let mut all_programs = HashSet::new();
     let mut childrens = HashSet::new();
@@ -127,7 +127,7 @@ impl ProgramSystem {
       }
     }
 
-    all_programs.sub(&childrens)
+    all_programs.sub(childrens)
   }
 
   fn insert_program(&mut self, code: &str) {
@@ -145,7 +145,7 @@ impl ProgramSystem {
 
         let empty_child_program = Program::empty_program(child_string.clone());
         let child_program = self.programs.entry(child_string).or_insert(empty_child_program);
-        program.children.push(*child_program);
+        program.children.push(child_program);
       }
     }
   }
