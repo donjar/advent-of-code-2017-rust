@@ -13,7 +13,7 @@ mod day03;
 mod day04;
 mod day05;
 mod day06;
-//mod day07;
+mod day07;
 mod day08;
 mod day09;
 mod day10;
@@ -44,8 +44,8 @@ fn main() {
         (05, 2) => println!("{}", day05::no2()),
         (06, 1) => println!("{}", day06::no1()),
         (06, 2) => println!("{}", day06::no2()),
-        // (07, 1) => println!("{}", day07::no1()),
-        // (07, 2) => println!("{}", day07::no2()),
+        (07, 1) => println!("{}", day07::no1()),
+        (07, 2) => println!("{}", day07::no2()),
         (08, 1) => println!("{}", day08::no1()),
         (08, 2) => println!("{}", day08::no2()),
         (09, 1) => println!("{}", day09::no1()),

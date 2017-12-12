@@ -92,10 +92,10 @@ fn run2(list: &str) -> i32 {
   0
 }
 
+#[derive(PartialEq, Eq, Hash)]
 struct Program {
   name: String,
   children: Vec<Program>,
-  parent: Option<Box<Program>>,
   weight: i32,
   sum: i32,
 }
@@ -109,7 +109,6 @@ impl Program {
     Program {
       name,
       children: Vec::new(),
-      parent: None,
       weight: 0,
       sum: 0,
     }
@@ -117,6 +116,20 @@ impl Program {
 }
 
 impl ProgramSystem {
+  fn get_roots(&self) -> HashSet<&Program> {
+    let mut all_programs = HashSet::new();
+    let mut childrens = HashSet::new();
+
+    for p in self.programs.values() {
+      all_programs.insert(p);
+      for c in p.children.iter() {
+        childrens.insert(c);
+      }
+    }
+
+    all_programs.sub(&childrens)
+  }
+
   fn insert_program(&mut self, code: &str) {
     let code_regex = Regex::new(r"^(.*) \((.*)\)( -> )?(.*)$").unwrap();
 
@@ -125,41 +138,22 @@ impl ProgramSystem {
       let weight = cap[2].parse().unwrap();
       let children = cap[4].split(", ");
 
-      self.register_program(name, weight);
+      let program = self.register_program(name, weight);
 
       for child in children {
-        let program = self.programs.get(&name).unwrap();
         let child_string = child.to_string();
 
-        if let Some(p) = self.programs.get(&child_string) {
-          self.bind(&mut program, &mut p);
-        } else {
-          let child_program = Program::empty_program(child_string);
-          self.programs.insert(child_string, child_program);
-          self.bind(&mut program, &mut child_program);
-        }
+        let empty_child_program = Program::empty_program(child_string.clone());
+        let child_program = self.programs.entry(child_string).or_insert(empty_child_program);
+        program.children.push(*child_program);
       }
     }
   }
 
-  fn register_program(&mut self, name: String, weight: i32) {
-    if let Some(p) = self.programs.get(&name) {
-      p.weight = weight;
-    } else {
-      let program = Program {
-        name,
-        children: Vec::new(),
-        parent: None,
-        weight,
-        sum: 0,
-      };
-      self.programs.insert(name, program);
-    }
-  }
-
-  fn bind(&self, parent: &mut Program, child: &mut Program) {
-    assert!(child.parent.is_none());
-    child.parent = Some(Box::new(*parent));
-    parent.children.push(*child);
+  fn register_program(&mut self, name: String, weight: i32) -> &mut Program {
+    let empty_program = Program::empty_program(name.clone());
+    let program = self.programs.entry(name).or_insert(empty_program);
+    program.weight = weight;
+    program
   }
 }
