@@ -58,55 +58,26 @@ pub fn no2() -> i32 {
 fn run1(adj_list: &str) -> i32 {
   let adj_list_mapping = construct_adj_list(adj_list);
 
-  // DFS
-  let mut dfs_stack = Vec::new();
-  let mut visited = HashSet::new();
-  dfs_stack.push(String::from("0"));
-
-  while !dfs_stack.is_empty() {
-    let next = dfs_stack.pop().unwrap();
-
-    for neighbor in adj_list_mapping.get(&next).unwrap() {
-      if !visited.contains(neighbor) {
-        dfs_stack.push(neighbor.clone());
-      }
-    }
-
-    visited.insert(next);
-  }
-
-  visited.len() as i32
+  get_component(&adj_list_mapping, String::from("0")).len() as i32
 }
 
 fn run2(adj_list: &str) -> i32 {
   let adj_list_mapping = construct_adj_list(adj_list);
 
-  // DFS
   let mut total_cc = 0;
-
-  let mut dfs_stack = Vec::new();
   let mut unvisited = HashSet::new();
-  let mut visited = HashSet::new();
 
   for k in adj_list_mapping.keys() {
     unvisited.insert(k.clone());
   }
 
   while !unvisited.is_empty() {
-    dfs_stack.push(unvisited.iter().next().unwrap().clone());
+    let next = unvisited.iter().next().unwrap().clone();
     total_cc += 1;
 
-    while !dfs_stack.is_empty() {
-      let next = dfs_stack.pop().unwrap();
-
-      for neighbor in adj_list_mapping.get(&next).unwrap() {
-        if !visited.contains(neighbor) {
-          dfs_stack.push(neighbor.clone());
-        }
-      }
-
-      visited.insert(next.clone());
-      unvisited.remove(&next);
+    let component = get_component(&adj_list_mapping, String::from(next));
+    for n in component {
+      unvisited.remove(&n);
     }
   }
 
@@ -115,7 +86,7 @@ fn run2(adj_list: &str) -> i32 {
 
 fn construct_adj_list(adj_list: &str) -> HashMap<String, HashSet<String>> {
   let adj_list_regex = Regex::new(r"^(.*) <-> (.*)$").unwrap();
-  // Construct hashmap
+
   let mut h = HashMap::new();
 
   for l in adj_list.lines() {
@@ -132,4 +103,27 @@ fn construct_adj_list(adj_list: &str) -> HashMap<String, HashSet<String>> {
   }
 
   h
+}
+
+fn get_component(
+  adj_list_mapping: &HashMap<String, HashSet<String>>,
+  start: String,
+) -> HashSet<String> {
+  let mut dfs_stack = Vec::new();
+  let mut visited = HashSet::new();
+  dfs_stack.push(start);
+
+  while !dfs_stack.is_empty() {
+    let next = dfs_stack.pop().unwrap();
+
+    for neighbor in adj_list_mapping.get(&next).unwrap() {
+      if !visited.contains(neighbor) {
+        dfs_stack.push(neighbor.clone());
+      }
+    }
+
+    visited.insert(next);
+  }
+
+  visited
 }
