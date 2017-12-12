@@ -92,7 +92,7 @@ fn run2(adj_list: &str) -> i32 {
     unvisited.insert(k.clone());
   }
 
-  while visited.len() != adj_list_mapping.len() {
+  while !unvisited.is_empty() {
     dfs_stack.push(unvisited.iter().next().unwrap().clone());
     total_cc += 1;
 
@@ -113,14 +113,12 @@ fn run2(adj_list: &str) -> i32 {
   total_cc
 }
 
-fn construct_adj_list(
-  adj_list_string: &str,
-) -> HashMap<String, HashSet<String>> {
+fn construct_adj_list(adj_list: &str) -> HashMap<String, HashSet<String>> {
   let adj_list_regex = Regex::new(r"^(.*) <-> (.*)$").unwrap();
   // Construct hashmap
   let mut h = HashMap::new();
 
-  for l in adj_list_string.lines() {
+  for l in adj_list.lines() {
     for captures in adj_list_regex.captures_iter(l) {
       let node = captures[1].to_string();
       let neighbors = captures[2].split(", ");
