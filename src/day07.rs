@@ -1,6 +1,6 @@
 use regex::Regex;
-use std::collections::HashSet;
 use std::collections::HashMap;
+use std::collections::HashSet;
 use std::ops::Sub;
 
 #[cfg(test)]
@@ -44,7 +44,7 @@ mod tests {
        gyxo (61)
        cntj (57)"
     );
-    assert_eq!(8, run2(input));
+    assert_eq!(60, run2(input));
   }
 
   #[test]
@@ -52,10 +52,9 @@ mod tests {
     assert_eq!("hlqnsbe", no1());
   }
 
-  #[ignore]
   #[test]
   fn no2_test() {
-    assert_eq!(191, no2());
+    assert_eq!(1993, no2());
   }
 }
 
@@ -66,7 +65,7 @@ pub fn no1() -> String {
 
 pub fn no2() -> i32 {
   let input = include_str!("../inputs/input07").trim();
-  0
+  run2(input)
 }
 
 fn run1(list: &str) -> String {
@@ -89,77 +88,109 @@ fn run1(list: &str) -> String {
 }
 
 fn run2(list: &str) -> i32 {
-  0
-}
+  let mut current = run1(list);
+  let mut result = 0;
 
-struct Program {
-  name: String,
-  children: Vec<Program>,
-  parent: Option<Box<Program>>,
-  weight: i32,
-  sum: i32,
-}
+  loop {
+    let mut hash = HashMap::new();
+    let children = get_children(list, current.clone());
+    for c in children.clone() {
+      hash.insert(c.clone(), get_sum(list, c));
+    }
 
-struct ProgramSystem {
-  programs: HashMap<String, Program>,
-}
+    let majority = get_majority(&hash);
 
-impl Program {
-  fn empty_program(name: String) -> Program {
-    Program {
-      name,
-      children: Vec::new(),
-      parent: None,
-      weight: 0,
-      sum: 0,
+    let mut completed = true;
+    for c in children {
+      let val = *hash.get(&c).unwrap();
+      if val != majority {
+        completed = false;
+        result = val - majority;
+        current = c;
+        break;
+      }
+    }
+
+    if completed {
+      return get_number(list, current) - result;
     }
   }
 }
 
-impl ProgramSystem {
-  fn insert_program(&mut self, code: &str) {
-    let code_regex = Regex::new(r"^(.*) \((.*)\)( -> )?(.*)$").unwrap();
+fn get_children(list: &str, program: String) -> Vec<String> {
+  lazy_static! {
+    static ref RE: Regex = Regex::new(r"^(.*) \((.*)\)( -> )?(.*)$").unwrap();
+  }
 
-    for cap in code_regex.captures_iter(code) {
+  for line in list.lines() {
+    for cap in RE.captures_iter(line) {
       let name = cap[1].to_string();
-      let weight = cap[2].parse().unwrap();
-      let children = cap[4].split(", ");
-
-      self.register_program(name, weight);
-
-      for child in children {
-        let program = self.programs.get(&name).unwrap();
-        let child_string = child.to_string();
-
-        if let Some(p) = self.programs.get(&child_string) {
-          self.bind(&mut program, &mut p);
-        } else {
-          let child_program = Program::empty_program(child_string);
-          self.programs.insert(child_string, child_program);
-          self.bind(&mut program, &mut child_program);
-        }
+      if name == program {
+        return cap[4].split(", ").map(|s| s.to_string()).collect();
       }
     }
   }
 
-  fn register_program(&mut self, name: String, weight: i32) {
-    if let Some(p) = self.programs.get(&name) {
-      p.weight = weight;
-    } else {
-      let program = Program {
-        name,
-        children: Vec::new(),
-        parent: None,
-        weight,
-        sum: 0,
-      };
-      self.programs.insert(name, program);
+  panic!("Program not inside");
+}
+
+fn get_sum(list: &str, program: String) -> i32 {
+  lazy_static! {
+    static ref RE: Regex = Regex::new(r"^(.*) \((.*)\)( -> )?(.*)$").unwrap();
+  }
+
+  for line in list.lines() {
+    for cap in RE.captures_iter(line) {
+      let name = cap[1].to_string();
+      if name == program {
+        let mut sum = cap[2].parse().unwrap();
+
+        for s in cap[4].split(", ") {
+          if !s.is_empty() {
+            sum += get_sum(list, s.to_string());
+          }
+        }
+
+        return sum;
+      }
     }
   }
 
-  fn bind(&self, parent: &mut Program, child: &mut Program) {
-    assert!(child.parent.is_none());
-    child.parent = Some(Box::new(*parent));
-    parent.children.push(*child);
+  panic!("Program not inside");
+}
+
+fn get_number(list: &str, program: String) -> i32 {
+  lazy_static! {
+    static ref RE: Regex = Regex::new(r"^(.*) \((.*)\)( -> )?(.*)$").unwrap();
+  }
+
+  for line in list.lines() {
+    for cap in RE.captures_iter(line) {
+      let name = cap[1].to_string();
+      if name == program {
+        return cap[2].parse().unwrap();
+      }
+    }
+  }
+
+  panic!("Program not inside");
+}
+
+fn get_majority(h: &HashMap<String, i32>) -> i32 {
+  let mut k = h.keys();
+  let first = k.next().unwrap();
+  let second = k.next().unwrap();
+  if h.get(first) == h.get(second) {
+    return *h.get(first).unwrap();
+  }
+
+  let third = k.next().unwrap();
+
+  if h.get(second) == h.get(third) {
+    return *h.get(second).unwrap();
+  } else if h.get(third) == h.get(first) {
+    return *h.get(third).unwrap();
+  } else {
+    panic!("GG");
   }
 }
