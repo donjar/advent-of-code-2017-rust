@@ -52,7 +52,12 @@ fn run2(lengths: &str) -> String {
   let mut skip = 0;
 
   for _ in 0..64 {
-    knot(&mut vec, usize_lens.iter().cloned(), &mut pointer, &mut skip);
+    knot(
+      &mut vec,
+      usize_lens.iter().cloned(),
+      &mut pointer,
+      &mut skip,
+    );
   }
 
   vec.chunks(16).fold(String::new(), |text, chunk| {
