@@ -1,5 +1,5 @@
 use regex::Regex;
-use std::cmp;
+use std::cmp::max;
 use std::collections::HashMap;
 
 #[cfg(test)]
@@ -61,14 +61,14 @@ fn run1(program: &str) -> i32 {
 
 fn run2(program: &str) -> i32 {
   let mut cpu = Cpu::new();
-  let mut max = 0;
+  let mut m = 0;
 
   for ins in program.lines() {
     cpu.run(ins);
-    max = cmp::max(max, cpu.get_max());
+    m = max(m, cpu.get_max());
   }
 
-  max
+  m
 }
 
 struct Cpu {
@@ -144,6 +144,6 @@ impl Cpu {
   }
 
   fn get_max(&self) -> i32 {
-    cmp::max(0, *self.registers.values().max().unwrap_or(&0))
+    max(0, *self.registers.values().max().unwrap_or(&0))
   }
 }
