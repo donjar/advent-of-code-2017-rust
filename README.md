@@ -1,6 +1,8 @@
 # advent-of-code-2017-rust
 Advent of Code 2017, done in Rust!
 
+[![Build Status](https://travis-ci.org/donjar/advent-of-code-2017-rust.svg?branch=master)](https://travis-ci.org/donjar/advent-of-code-2017-rust)
+
 ## Problems
 https://adventofcode.com/2017
 
