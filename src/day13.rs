@@ -31,7 +31,6 @@ mod tests {
     assert_eq!(1904, no1());
   }
 
-  #[ignore]
   #[test]
   fn no2_test() {
     assert_eq!(3833504, no2());
@@ -58,7 +57,7 @@ fn run1(record: &str) -> i32 {
         let depth = captures[1].parse().expect("Error unwrapping depth");
         let range = captures[2].parse().expect("Error unwrapping range");
 
-        if hit(depth, range, 0) {
+        if hit(depth, range) {
           return depth * range;
         } else {
           return 0;
@@ -72,34 +71,29 @@ fn run1(record: &str) -> i32 {
 fn run2(record: &str) -> i32 {
   let re = Regex::new(r"^([[:digit:]]+): ([[:digit:]]+)$").unwrap();
 
-  let mut ans = 0;
-  let mut found = true;
-  loop {
-    for l in record.lines() {
+  let all_divs: Vec<(_, _)> = record
+    .lines()
+    .map(|l| {
       for captures in re.captures_iter(l) {
-        let depth = captures[1].parse().expect("Error unwrapping depth");
-        let range = captures[2].parse().expect("Error unwrapping range");
-
-        if hit(depth, range, ans) {
-          found = false;
-          break;
-        }
+        let depth: i32 = captures[1].parse().expect("Error unwrapping depth");
+        let range: i32 = captures[2].parse().expect("Error unwrapping range");
+        let modulo = 2 * (range - 1);
+        return ((modulo - (depth % modulo)) % modulo, modulo);
       }
+      panic!("Not captured");
+    })
+    .collect();
 
-      if !found {
-        break;
-      }
-    }
-
-    if found {
+  let mut ans = 0;
+  loop {
+    let iter = all_divs.iter().cloned();
+    if iter.all(|(remainder, modulo)| ans % modulo != remainder) {
       return ans;
-    } else {
-      ans += 1;
-      found = true;
     }
+    ans += 1;
   }
 }
 
-fn hit(depth: i32, range: i32, offset: i32) -> bool {
-  (depth + offset) % (2 * (range - 1)) == 0
+fn hit(depth: i32, range: i32) -> bool {
+  depth % (2 * (range - 1)) == 0
 }
