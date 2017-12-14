@@ -38,21 +38,33 @@ pub fn no2() -> i32 {
 }
 
 fn run1(record: &str) -> i32 {
-  (0..128).map(|i| {
-    let key: &str = &format!("{}-{}", record, i);
-    key.knot_hash().chars().map(|c| {
-      c.to_digit(16).unwrap().count_ones() as i32
-    }).sum::<i32>()
-  }).sum()
+  (0..128)
+    .map(|i| {
+      let key: &str = &format!("{}-{}", record, i);
+      key
+        .knot_hash()
+        .chars()
+        .map(|c| c.to_digit(16).unwrap().count_ones() as i32)
+        .sum::<i32>()
+    })
+    .sum()
 }
 
 fn run2(record: &str) -> i32 {
-  let mut matrix: Vec<Vec<char>> = (0..128).map(|i| {
-    let key: &str = &format!("{}-{}", record, i);
-    key.knot_hash().chars().flat_map(|c| {
-      format!("{:04b}", c.to_digit(16).unwrap()).chars().collect::<Vec<_>>()
-    }).collect::<Vec<_>>()
-  }).collect();
+  let mut matrix: Vec<Vec<char>> = (0..128)
+    .map(|i| {
+      let key: &str = &format!("{}-{}", record, i);
+      key
+        .knot_hash()
+        .chars()
+        .flat_map(|c| {
+          format!("{:04b}", c.to_digit(16).unwrap())
+            .chars()
+            .collect::<Vec<_>>()
+        })
+        .collect::<Vec<_>>()
+    })
+    .collect();
 
   let mut count = 0;
   for i in 0..matrix.len() {

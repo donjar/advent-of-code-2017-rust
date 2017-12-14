@@ -32,7 +32,7 @@ impl<'a> KnotHashExt for &'a str {
         usize_lens.iter().cloned(),
         &mut pointer,
         &mut skip,
-        );
+      );
     }
 
     vec.chunks(16).fold(String::new(), |text, chunk| {
@@ -46,8 +46,8 @@ fn knot<'a, I>(
   lengths: I,
   pointer: &mut usize,
   skip: &mut usize,
-  ) where
-I: Iterator<Item = usize>,
+) where
+  I: Iterator<Item = usize>,
 {
   for length in lengths {
     rev(&mut vector, *pointer, length);
