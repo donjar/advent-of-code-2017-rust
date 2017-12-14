@@ -90,7 +90,7 @@ impl Cpu {
 
     for captures in INCREMENT_REGEX.captures_iter(ins) {
       let register = &captures[1];
-      let increment = captures[2].parse::<i32>();
+      let increment: Result<i32, _> = captures[2].parse();
       let condition = &captures[3];
 
       if let Ok(inc) = increment {
@@ -100,7 +100,7 @@ impl Cpu {
 
     for captures in DECREMENT_REGEX.captures_iter(ins) {
       let register = &captures[1];
-      let decrement = captures[2].parse::<i32>();
+      let decrement: Result<i32, _> = captures[2].parse();
       let condition = &captures[3];
 
       if let Ok(dec) = decrement {
@@ -128,7 +128,7 @@ impl Cpu {
       if let Err(_) = captures[3].parse::<i32>() {
         return Err(());
       }
-      let rhs = captures[3].parse::<i32>().unwrap();
+      let rhs: i32 = captures[3].parse().unwrap();
 
       match operator {
         ">=" => return Ok(lhs >= rhs),

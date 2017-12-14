@@ -74,7 +74,7 @@ fn run2(passphrases: &str) -> i32 {
       let mut words = HashSet::new();
 
       for w in passphrase.split(" ") {
-        let mut sorted = w.chars().collect::<Vec<char>>();
+        let mut sorted: Vec<char> = w.chars().collect();
         sorted.sort();
 
         if words.contains(&sorted) {

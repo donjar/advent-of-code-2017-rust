@@ -86,7 +86,7 @@ fn run2(record: &str) -> i32 {
 
   let mut ans = 0;
   loop {
-    let iter = all_divs.iter().cloned();
+    let mut iter = all_divs.iter().cloned();
     if iter.all(|(remainder, modulo)| ans % modulo != remainder) {
       return ans;
     }
