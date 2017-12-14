@@ -1,4 +1,4 @@
-use helper::StringExt;
+use helper::DataSplitExt;
 
 #[cfg(test)]
 mod tests {

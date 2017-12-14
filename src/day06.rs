@@ -1,4 +1,4 @@
-use helper::StringExt;
+use helper::DataSplitExt;
 use std::collections::HashMap;
 
 #[cfg(test)]
