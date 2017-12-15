@@ -83,9 +83,9 @@ impl Cpu {
   fn run(&mut self, ins: &str) {
     lazy_static! {
       static ref INCREMENT_REGEX: Regex =
-        Regex::new(r"^(.*) inc (.*) if (.*)$").unwrap();
+        Regex::new(r"^(.+) inc (.+) if (.+)$").unwrap();
       static ref DECREMENT_REGEX: Regex =
-        Regex::new(r"^(.*) dec (.*) if (.*)$").unwrap();
+        Regex::new(r"^(.+) dec (.+) if (.+)$").unwrap();
     }
 
     for captures in INCREMENT_REGEX.captures_iter(ins) {
@@ -119,7 +119,8 @@ impl Cpu {
 
   fn parse_condition(&mut self, condition: &str) -> Result<bool, ()> {
     lazy_static! {
-      static ref RE: Regex = Regex::new(r"^(.*) (.*) (.*)$").unwrap();
+      static ref RE: Regex =
+        Regex::new(r"^(.+) (.+) (-?[[:digit:]]+)$").unwrap();
     }
 
     for captures in RE.captures_iter(condition) {

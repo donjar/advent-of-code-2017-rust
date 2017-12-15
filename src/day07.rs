@@ -70,7 +70,7 @@ pub fn no2() -> i32 {
 }
 
 fn run1(list: &str) -> String {
-  let re = Regex::new(r"^(.*) \(.*\)( -> )?(.*)$").unwrap();
+  let re = Regex::new(r"^(.+) \([[:digit:]]+\)( -> )?(.*)$").unwrap();
 
   let mut all_programs = HashSet::new();
   let mut top_programs = HashSet::new();
@@ -120,7 +120,8 @@ fn run2(list: &str) -> i32 {
 
 fn get_children(list: &str, program: String) -> Vec<String> {
   lazy_static! {
-    static ref RE: Regex = Regex::new(r"^(.*) \((.*)\)( -> )?(.*)$").unwrap();
+    static ref RE: Regex =
+      Regex::new(r"^(.+) \(([[:digit:]]+)\)( -> )?(.*)$").unwrap();
   }
 
   for line in list.lines() {
@@ -137,7 +138,8 @@ fn get_children(list: &str, program: String) -> Vec<String> {
 
 fn get_sum(list: &str, program: String) -> i32 {
   lazy_static! {
-    static ref RE: Regex = Regex::new(r"^(.*) \((.*)\)( -> )?(.*)$").unwrap();
+    static ref RE: Regex =
+      Regex::new(r"^(.+) \(([[:digit:]]+)\)( -> )?(.*)$").unwrap();
   }
 
   for line in list.lines() {
@@ -162,7 +164,8 @@ fn get_sum(list: &str, program: String) -> i32 {
 
 fn get_number(list: &str, program: String) -> i32 {
   lazy_static! {
-    static ref RE: Regex = Regex::new(r"^(.*) \((.*)\)( -> )?(.*)$").unwrap();
+    static ref RE: Regex =
+      Regex::new(r"^(.+) \(([[:digit:]]+)\)( -> )?(.*)$").unwrap();
   }
 
   for line in list.lines() {

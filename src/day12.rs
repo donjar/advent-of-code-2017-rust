@@ -85,7 +85,7 @@ fn run2(adj_list: &str) -> i32 {
 }
 
 fn construct_adj_list(adj_list: &str) -> HashMap<String, HashSet<String>> {
-  let adj_list_regex = Regex::new(r"^(.*) <-> (.*)$").unwrap();
+  let adj_list_regex = Regex::new(r"^([[:digit:]]+) <-> (.+)$").unwrap();
 
   let mut h = HashMap::new();
 
