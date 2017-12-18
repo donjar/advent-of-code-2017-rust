@@ -7,3 +7,4 @@ authors = ["Herbert Ilhan Tanujaya <mail@herbert.id>"]
 regex = "0.2.3"
 lazy_static = "1.0"
 indoc = "0.2"
+noisy_float = "0.1.4"

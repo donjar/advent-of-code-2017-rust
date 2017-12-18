@@ -4,6 +4,7 @@ extern crate lazy_static;
 #[cfg(test)]
 #[macro_use]
 extern crate indoc;
+extern crate noisy_float;
 
 mod helper;
 
@@ -23,6 +24,7 @@ mod day13;
 mod day14;
 mod day15;
 mod day16;
+mod day17;
 
 use std::env;
 use std::process::exit;
@@ -70,6 +72,8 @@ fn main() {
         (15, 2) => println!("{}", day15::no2()),
         (16, 1) => println!("{}", day16::no1()),
         (16, 2) => println!("{}", day16::no2()),
+        (17, 1) => println!("{}", day17::no1()),
+        (17, 2) => println!("{}", day17::no2()),
         _ => println!("Day {} number {} not found", day, no),
       }
     } else {
