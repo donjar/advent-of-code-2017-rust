@@ -43,12 +43,13 @@ fn run(instructions: &str, type2: bool) -> i32 {
   let mut steps = 0;
 
   while 0 <= pos && pos < ins.len() as i32 {
-    let offset = ins[pos as usize];
+    let p = pos as usize;
+    let offset = ins[p];
 
     if type2 && ins[pos as usize] >= 3 {
-      ins[pos as usize] -= 1;
+      ins[p] -= 1;
     } else {
-      ins[pos as usize] += 1;
+      ins[p] += 1;
     }
 
     pos += offset;

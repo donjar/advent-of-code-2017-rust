@@ -45,7 +45,7 @@ mod tests {
   }
 }
 
-pub fn no1() -> i32 {
+pub fn no1() -> usize {
   let input = include_str!("../inputs/input12").trim();
   run1(input)
 }
@@ -55,10 +55,10 @@ pub fn no2() -> i32 {
   run2(input)
 }
 
-fn run1(adj_list: &str) -> i32 {
+fn run1(adj_list: &str) -> usize {
   let adj_list_mapping = construct_adj_list(adj_list);
 
-  get_component(&adj_list_mapping, String::from("0")).len() as i32
+  get_component(&adj_list_mapping, String::from("0")).len()
 }
 
 fn run2(adj_list: &str) -> i32 {

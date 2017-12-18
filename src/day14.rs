@@ -27,7 +27,7 @@ mod tests {
   }
 }
 
-pub fn no1() -> i32 {
+pub fn no1() -> u32 {
   let input = include_str!("../inputs/input14").trim();
   run1(input)
 }
@@ -37,15 +37,15 @@ pub fn no2() -> i32 {
   run2(input)
 }
 
-fn run1(record: &str) -> i32 {
+fn run1(record: &str) -> u32 {
   (0..128)
     .map(|i| {
       let key: &str = &format!("{}-{}", record, i);
       key
         .knot_hash()
         .chars()
-        .map(|c| c.to_digit(16).unwrap().count_ones() as i32)
-        .sum::<i32>()
+        .map(|c| c.to_digit(16).unwrap().count_ones())
+        .sum::<u32>()
     })
     .sum()
 }

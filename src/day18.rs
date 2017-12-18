@@ -79,7 +79,10 @@ impl SoundTablet {
   fn new(instructions: String) -> SoundTablet {
     SoundTablet {
       registers: HashMap::new(),
-      instructions: instructions.lines().map(|l| l.split(" ").map(|c| c.to_string()).collect()).collect(),
+      instructions: instructions
+        .lines()
+        .map(|l| l.split(" ").map(|c| c.to_string()).collect())
+        .collect(),
       counter: 0,
       last_sound: None,
     }
@@ -94,37 +97,37 @@ impl SoundTablet {
         "set" => {
           let second = self.get_value(current[2].clone());
           self.registers.insert(first, second);
-        },
+        }
         "add" => {
           let second = self.get_value(current[2].clone());
           let current = *self.registers.get(&first).unwrap_or(&0);
           self.registers.insert(first, current + second);
-        },
+        }
         "mul" => {
           let second = self.get_value(current[2].clone());
           let current = *self.registers.get(&first).unwrap_or(&0);
           self.registers.insert(first, current * second);
-        },
+        }
         "mod" => {
           let second = self.get_value(current[2].clone());
           let current = *self.registers.get(&first).unwrap_or(&0);
           self.registers.insert(first, current % second);
-        },
+        }
         "snd" => {
           self.last_sound = Some(self.get_value(first));
-        },
+        }
         "rcv" => {
           if self.get_value(first) != 0 {
             return self.last_sound;
           }
-        },
+        }
         "jgz" => {
           if self.get_value(first) > 0 {
             let second = self.get_value(current[2].clone());
             self.counter += second;
             self.counter -= 1; // negate counter addition
           }
-        },
+        }
         _ => panic!(format!("Instruction {:?} not recognized", current)),
       }
 
@@ -163,7 +166,10 @@ impl MqTablet {
       registers1: r1,
       queue0: VecDeque::new(),
       queue1: VecDeque::new(),
-      instructions: instructions.lines().map(|l| l.split(" ").map(|c| c.to_string()).collect()).collect(),
+      instructions: instructions
+        .lines()
+        .map(|l| l.split(" ").map(|c| c.to_string()).collect())
+        .collect(),
       counter: 0,
       turn: 0,
     }
@@ -180,29 +186,29 @@ impl MqTablet {
         "set" => {
           let second = self.get_value(current[2].clone());
           self.current_registers().insert(first, second);
-        },
+        }
         "add" => {
           let second = self.get_value(current[2].clone());
           let current = *self.current_registers().get(&first).unwrap_or(&0);
           self.current_registers().insert(first, current + second);
-        },
+        }
         "mul" => {
           let second = self.get_value(current[2].clone());
           let current = *self.current_registers().get(&first).unwrap_or(&0);
           self.current_registers().insert(first, current * second);
-        },
+        }
         "mod" => {
           let second = self.get_value(current[2].clone());
           let current = *self.current_registers().get(&first).unwrap_or(&0);
           self.current_registers().insert(first, current % second);
-        },
+        }
         "snd" => {
           let val = self.get_value(first);
           self.other_queue().push_back(val);
           if self.turn == 1 {
             p1_count += 1;
           }
-        },
+        }
         "rcv" => {
           if self.rcv(first).is_err() {
             self.switch_program();
@@ -211,14 +217,14 @@ impl MqTablet {
               return p1_count;
             }
           }
-        },
+        }
         "jgz" => {
           if self.get_value(first) > 0 {
             let second = self.get_value(current[2].clone());
             self.counter += second;
             self.counter -= 1; // negate counter addition
           }
-        },
+        }
         _ => panic!(format!("Instruction {:?} not recognized", current)),
       }
 
