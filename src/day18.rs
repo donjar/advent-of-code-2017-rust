@@ -41,10 +41,9 @@ mod tests {
     assert_eq!(1187, no1());
   }
 
-  #[ignore]
   #[test]
   fn no2_test() {
-    assert_eq!(10, no2());
+    assert_eq!(5969, no2());
   }
 }
 
@@ -150,8 +149,10 @@ struct MqTablet {
   queue0: VecDeque<i64>,
   queue1: VecDeque<i64>,
   instructions: Vec<Vec<String>>,
-  counter: i64,
+  counter0: i64,
+  counter1: i64,
   turn: i64,
+  block: i64,
 }
 
 impl MqTablet {
@@ -170,8 +171,10 @@ impl MqTablet {
         .lines()
         .map(|l| l.split(" ").map(|c| c.to_string()).collect())
         .collect(),
-      counter: 0,
+      counter0: 0,
+      counter1: 0,
       turn: 0,
+      block: 0,
     }
   }
 
@@ -179,7 +182,8 @@ impl MqTablet {
     let mut p1_count = 0;
 
     loop {
-      let current = &self.instructions[self.counter as usize];
+      let counter = self.current_counter().clone() as usize;
+      let current = &self.instructions[counter].clone();
       let first = current[1].clone();
 
       match current[0].as_ref() {
@@ -210,29 +214,34 @@ impl MqTablet {
           }
         }
         "rcv" => {
-          if self.rcv(first).is_err() {
-            self.switch_program();
-            if self.rcv(first).is_err() {
-              // Deadlock
+          if self.rcv(first.clone()).is_err() {
+            if self.block > 0 {
               return p1_count;
+            } else {
+              self.switch_program();
+              *self.current_counter() -= 1; // negate counter addition
+              self.block = 2; // 2 blocks and you're out
             }
           }
         }
         "jgz" => {
           if self.get_value(first) > 0 {
             let second = self.get_value(current[2].clone());
-            self.counter += second;
-            self.counter -= 1; // negate counter addition
+            *self.current_counter() += second;
+            *self.current_counter() -= 1; // negate counter addition
           }
         }
         _ => panic!(format!("Instruction {:?} not recognized", current)),
       }
 
-      self.counter += 1;
+      *self.current_counter() += 1;
+      if self.block > 0 {
+        self.block -= 1;
+      }
     }
   }
 
-  fn get_value(&self, argument: String) -> i64 {
+  fn get_value(&mut self, argument: String) -> i64 {
     if let Some(val) = argument.parse().ok() {
       val
     } else {
@@ -240,26 +249,34 @@ impl MqTablet {
     }
   }
 
-  fn current_registers(&self) -> HashMap<String, i64> {
+  fn current_registers(&mut self) -> &mut HashMap<String, i64> {
     match self.turn {
-      0 => self.registers0,
-      1 => self.registers1,
+      0 => &mut self.registers0,
+      1 => &mut self.registers1,
       _ => panic!("Invalid turn"),
     }
   }
 
-  fn current_queue(&self) -> VecDeque<i64> {
+  fn current_counter(&mut self) -> &mut i64 {
     match self.turn {
-      0 => self.queue0,
-      1 => self.queue1,
+      0 => &mut self.counter0,
+      1 => &mut self.counter1,
       _ => panic!("Invalid turn"),
     }
   }
 
-  fn other_queue(&self) -> VecDeque<i64> {
+  fn current_queue(&mut self) -> &mut VecDeque<i64> {
     match self.turn {
-      0 => self.queue1,
-      1 => self.queue0,
+      0 => &mut self.queue0,
+      1 => &mut self.queue1,
+      _ => panic!("Invalid turn"),
+    }
+  }
+
+  fn other_queue(&mut self) -> &mut VecDeque<i64> {
+    match self.turn {
+      0 => &mut self.queue1,
+      1 => &mut self.queue0,
       _ => panic!("Invalid turn"),
     }
   }
