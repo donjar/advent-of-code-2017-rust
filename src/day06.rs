@@ -29,12 +29,12 @@ mod tests {
 }
 
 pub fn no1() -> i32 {
-  let input = include_str!("../inputs/input06").trim();
+  let input = include_str!("../inputs/input06").trim_right();
   run(input, true)
 }
 
 pub fn no2() -> i32 {
-  let input = include_str!("../inputs/input06").trim();
+  let input = include_str!("../inputs/input06").trim_right();
   run(input, false)
 }
 

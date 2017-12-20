@@ -48,12 +48,12 @@ mod tests {
 }
 
 pub fn no1() -> i64 {
-  let input = include_str!("../inputs/input18").trim();
+  let input = include_str!("../inputs/input18").trim_right();
   run1(input)
 }
 
 pub fn no2() -> i64 {
-  let input = include_str!("../inputs/input18").trim();
+  let input = include_str!("../inputs/input18").trim_right();
   run2(input)
 }
 

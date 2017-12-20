@@ -26,12 +26,12 @@ mod tests {
 }
 
 pub fn no1() -> String {
-  let input = include_str!("../inputs/input16").trim();
+  let input = include_str!("../inputs/input16").trim_right();
   run1(input, 16)
 }
 
 pub fn no2() -> String {
-  let input = include_str!("../inputs/input16").trim();
+  let input = include_str!("../inputs/input16").trim_right();
   run2(input, 16, 1_000_000_000)
 }
 

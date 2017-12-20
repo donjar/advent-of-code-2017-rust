@@ -26,13 +26,13 @@ mod tests {
 }
 
 pub fn no1() -> i32 {
-  let input = include_str!("../inputs/input15").trim();
+  let input = include_str!("../inputs/input15").trim_right();
   let (a, b) = get_input(input);
   run1(a, b)
 }
 
 pub fn no2() -> i32 {
-  let input = include_str!("../inputs/input15").trim();
+  let input = include_str!("../inputs/input15").trim_right();
   let (a, b) = get_input(input);
   run2(a, b)
 }

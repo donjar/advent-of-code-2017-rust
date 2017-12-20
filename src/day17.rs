@@ -28,12 +28,12 @@ mod tests {
 }
 
 pub fn no1() -> usize {
-  let input = include_str!("../inputs/input17").trim().parse().unwrap();
+  let input = include_str!("../inputs/input17").trim_right().parse().unwrap();
   run1(input)
 }
 
 pub fn no2() -> usize {
-  let input = include_str!("../inputs/input17").trim().parse().unwrap();
+  let input = include_str!("../inputs/input17").trim_right().parse().unwrap();
   run2(input, 50_000_000)
 }
 

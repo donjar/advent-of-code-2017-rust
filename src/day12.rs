@@ -46,12 +46,12 @@ mod tests {
 }
 
 pub fn no1() -> usize {
-  let input = include_str!("../inputs/input12").trim();
+  let input = include_str!("../inputs/input12").trim_right();
   run1(input)
 }
 
 pub fn no2() -> i32 {
-  let input = include_str!("../inputs/input12").trim();
+  let input = include_str!("../inputs/input12").trim_right();
   run2(input)
 }
 
