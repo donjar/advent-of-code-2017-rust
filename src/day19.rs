@@ -1,3 +1,5 @@
+use helper::{Coordinate, Direction};
+
 #[cfg(test)]
 mod tests {
   use super::*;
@@ -83,39 +85,11 @@ fn run(input: &str) -> (String, i32) {
   }
 }
 
-#[derive(PartialEq, Eq, Clone, Copy)]
-enum Direction {
-  Left,
-  Up,
-  Right,
-  Down,
-}
-
-impl Direction {
-  fn all() -> Vec<Direction> {
-    vec![
-      Direction::Left,
-      Direction::Up,
-      Direction::Right,
-      Direction::Down,
-    ]
-  }
-
-  fn reverse(self) -> Direction {
-    match self {
-      Direction::Left => Direction::Right,
-      Direction::Up => Direction::Down,
-      Direction::Right => Direction::Left,
-      Direction::Down => Direction::Up,
-    }
-  }
-}
-
-fn next(current: (usize, usize), dir: Direction) -> (usize, usize) {
+fn next(current: Coordinate<usize>, dir: Direction) -> Coordinate<usize> {
   match dir {
-    Direction::Left => (current.0, current.1 - 1),
-    Direction::Up => (current.0 - 1, current.1),
-    Direction::Right => (current.0, current.1 + 1),
-    Direction::Down => (current.0 + 1, current.1),
+    Direction::Left => (current.x, current.y - 1),
+    Direction::Up => (current.x - 1, current.y),
+    Direction::Right => (current.x, current.y + 1),
+    Direction::Down => (current.x + 1, current.y),
   }
 }

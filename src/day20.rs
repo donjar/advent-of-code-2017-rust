@@ -23,10 +23,9 @@ mod tests {
     assert_eq!(0, run2(input));
   }
 
-  #[ignore]
   #[test]
   fn no1_test() {
-    assert_eq!(175, no1());
+    assert_eq!(47, no1());
   }
 
   #[ignore]

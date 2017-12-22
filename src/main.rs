@@ -4,6 +4,7 @@ extern crate lazy_static;
 #[cfg(test)]
 #[macro_use]
 extern crate indoc;
+extern crate num;
 
 mod helper;
 
@@ -28,7 +29,7 @@ mod day18;
 mod day19;
 mod day20;
 mod day21;
-//mod day22;
+mod day22;
 //mod day23;
 //mod day24;
 //mod day25;
@@ -89,8 +90,8 @@ fn main() {
         (20, 2) => println!("{}", day20::no2()),
         (21, 1) => println!("{}", day21::no1()),
         (21, 2) => println!("{}", day21::no2()),
-        //(22, 1) => println!("{}", day22::no1()),
-        //(22, 2) => println!("{}", day22::no2()),
+        (22, 1) => println!("{}", day22::no1()),
+        (22, 2) => println!("{}", day22::no2()),
         //(23, 1) => println!("{}", day23::no1()),
         //(23, 2) => println!("{}", day23::no2()),
         //(24, 1) => println!("{}", day24::no1()),

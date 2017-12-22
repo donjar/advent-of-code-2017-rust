@@ -1,3 +1,4 @@
+use num::PrimInt;
 use std::str::FromStr;
 
 pub trait DataSplitExt {
@@ -63,3 +64,73 @@ fn rev(vector: &mut [i32], start: usize, length: usize) {
     vector.swap(first, second);
   }
 }
+
+#[derive(PartialEq, Eq, Hash, Clone, Copy)]
+pub struct Coordinate<T> {
+  pub x: T,
+  pub y: T,
+}
+
+impl<T> Coordinate<T> where T: PrimInt {
+  fn origin() -> Coordinate<T> {
+    Coordinate { x: 0, y: 0 }
+  }
+
+  fn day03_next(&self) -> Coordinate<T> {
+    if self.y <= 0 && self.y <= self.x && self.x <= -1 * self.y {
+      // (-2, -2), (-1, -2), (0, -2), (1, -2), (2, -2): go right
+      Coordinate { x: self.x + 1, y: self.y }
+    } else if self.x > 0 && -1 * self.x < self.y && self.y < self.x {
+      // (2, -1), (2, 0), (2, 1): go up
+      Coordinate { x: self.x, y: self.y + 1 }
+    } else if self.y > 0 && -1 * self.y < self.x && self.x <= self.y {
+      // (2, 2), (1, 2), (0, 2), (-1, 2): go left
+      Coordinate { x: self.x - 1, y: self.y }
+    } else {
+      // go down
+      Coordinate { x: self.x, y: self.y - 1 }
+    }
+  }
+
+  fn neighbors(&self) -> [Coordinate<T>; 8] {
+    [
+      Coordinate { x: self.x + 1, y: self.y + 1 },
+      Coordinate { x: self.x, y: self.y + 1 },
+      Coordinate { x: self.x - 1, y: self.y + 1 },
+      Coordinate { x: self.x + 1, y: self.y },
+      Coordinate { x: self.x - 1, y: self.y },
+      Coordinate { x: self.x + 1, y: self.y - 1 },
+      Coordinate { x: self.x, y: self.y - 1 },
+      Coordinate { x: self.x - 1, y: self.y - 1 },
+    ]
+  }
+}
+
+#[derive(PartialEq, Eq, Clone, Copy)]
+pub enum Direction {
+  Left,
+  Up,
+  Right,
+  Down,
+}
+
+impl Direction {
+  pub fn all() -> Vec<Direction> {
+    vec![
+      Direction::Left,
+      Direction::Up,
+      Direction::Right,
+      Direction::Down,
+    ]
+  }
+
+  pub fn reverse(self) -> Direction {
+    match self {
+      Direction::Left => Direction::Right,
+      Direction::Up => Direction::Down,
+      Direction::Right => Direction::Left,
+      Direction::Down => Direction::Up,
+    }
+  }
+}
+
