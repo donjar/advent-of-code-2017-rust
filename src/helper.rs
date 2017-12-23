@@ -72,36 +72,38 @@ pub struct Coordinate<T> {
 }
 
 impl<T> Coordinate<T> where T: PrimInt {
-  fn origin() -> Coordinate<T> {
-    Coordinate { x: 0, y: 0 }
+  pub fn origin() -> Coordinate<T> {
+    Coordinate { x: T::zero(), y: T::zero() }
   }
 
-  fn day03_next(&self) -> Coordinate<T> {
-    if self.y <= 0 && self.y <= self.x && self.x <= -1 * self.y {
+  pub fn day03_next(&self) -> Coordinate<T> {
+    let minus_one = T::zero() - T::one();
+
+    if self.y <= T::zero() && self.y <= self.x && self.x <= minus_one * self.y {
       // (-2, -2), (-1, -2), (0, -2), (1, -2), (2, -2): go right
-      Coordinate { x: self.x + 1, y: self.y }
-    } else if self.x > 0 && -1 * self.x < self.y && self.y < self.x {
+      Coordinate { x: self.x + T::one(), y: self.y }
+    } else if self.x > T::zero() && minus_one * self.x < self.y && self.y < self.x {
       // (2, -1), (2, 0), (2, 1): go up
-      Coordinate { x: self.x, y: self.y + 1 }
-    } else if self.y > 0 && -1 * self.y < self.x && self.x <= self.y {
+      Coordinate { x: self.x, y: self.y + T::one() }
+    } else if self.y > T::zero() && minus_one * self.y < self.x && self.x <= self.y {
       // (2, 2), (1, 2), (0, 2), (-1, 2): go left
-      Coordinate { x: self.x - 1, y: self.y }
+      Coordinate { x: self.x - T::one(), y: self.y }
     } else {
       // go down
-      Coordinate { x: self.x, y: self.y - 1 }
+      Coordinate { x: self.x, y: self.y - T::one() }
     }
   }
 
-  fn neighbors(&self) -> [Coordinate<T>; 8] {
+  pub fn neighbors(&self) -> [Coordinate<T>; 8] {
     [
-      Coordinate { x: self.x + 1, y: self.y + 1 },
-      Coordinate { x: self.x, y: self.y + 1 },
-      Coordinate { x: self.x - 1, y: self.y + 1 },
-      Coordinate { x: self.x + 1, y: self.y },
-      Coordinate { x: self.x - 1, y: self.y },
-      Coordinate { x: self.x + 1, y: self.y - 1 },
-      Coordinate { x: self.x, y: self.y - 1 },
-      Coordinate { x: self.x - 1, y: self.y - 1 },
+      Coordinate { x: self.x + T::one(), y: self.y + T::one() },
+      Coordinate { x: self.x, y: self.y + T::one() },
+      Coordinate { x: self.x - T::one(), y: self.y + T::one() },
+      Coordinate { x: self.x + T::one(), y: self.y },
+      Coordinate { x: self.x - T::one(), y: self.y },
+      Coordinate { x: self.x + T::one(), y: self.y - T::one() },
+      Coordinate { x: self.x, y: self.y - T::one() },
+      Coordinate { x: self.x - T::one(), y: self.y - T::one() },
     ]
   }
 }

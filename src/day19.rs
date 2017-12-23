@@ -42,10 +42,10 @@ fn run(input: &str) -> (String, i32) {
     input.lines().map(|l| l.chars().collect()).collect();
   let width = matrix[0].len();
 
-  let mut current = (0, 0);
+  let mut current = Coordinate::origin();
   for i in 0..width {
     if matrix[0][i] != ' ' {
-      current = (0, i);
+      current = Coordinate { x: 0, y: i };
       break;
     }
   }
@@ -55,7 +55,7 @@ fn run(input: &str) -> (String, i32) {
   let mut count = 0;
 
   loop {
-    let letter = matrix[current.0][current.1];
+    let letter = matrix[current.x][current.y];
     match letter {
       '|' | '-' => {
         // continue
@@ -66,7 +66,7 @@ fn run(input: &str) -> (String, i32) {
           .into_iter()
           .filter(|&d| {
             let c = next(current, d);
-            d != direction.reverse() && matrix[c.0][c.1] != ' '
+            d != direction.reverse() && matrix[c.x][c.y] != ' '
           })
           .next()
           .unwrap();
@@ -87,9 +87,9 @@ fn run(input: &str) -> (String, i32) {
 
 fn next(current: Coordinate<usize>, dir: Direction) -> Coordinate<usize> {
   match dir {
-    Direction::Left => (current.x, current.y - 1),
-    Direction::Up => (current.x - 1, current.y),
-    Direction::Right => (current.x, current.y + 1),
-    Direction::Down => (current.x + 1, current.y),
+    Direction::Left => Coordinate { x: current.x, y: current.y - 1 },
+    Direction::Up => Coordinate { x: current.x - 1, y: current.y },
+    Direction::Right => Coordinate { x: current.x, y: current.y + 1 },
+    Direction::Down => Coordinate { x: current.x + 1, y: current.y },
   }
 }

@@ -74,7 +74,7 @@ fn run1(input: i32) -> i32 {
 fn run2(input: i32) -> i32 {
   let mut coordinate_map = HashMap::new();
 
-  let mut current_coordinate = Coordinate::origin();
+  let mut current_coordinate: Coordinate<i32> = Coordinate::origin();
   let mut current_value = 1;
 
   while current_value < input {
