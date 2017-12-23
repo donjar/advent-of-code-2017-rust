@@ -19,10 +19,9 @@ mod tests {
     assert_eq!(120, no1());
   }
 
-  #[ignore]
   #[test]
   fn no2_test() {
-    assert_eq!(3833504, no2());
+    assert_eq!(2204099, no2());
   }
 }
 
@@ -47,9 +46,10 @@ fn run(rules: &str, iterations: i32) -> i32 {
 struct Art {
   rules: HashMap<String, String>,
   picture: Vec<Vec<bool>>,
+  transform_memo: HashMap<Component, Component>,
 }
 
-#[derive(Clone)]
+#[derive(Clone, PartialEq, Eq, Hash)]
 struct Component {
   component: Vec<Vec<bool>>,
 }
@@ -74,6 +74,7 @@ impl Art {
     Art {
       rules: rules_map,
       picture,
+      transform_memo: HashMap::new(),
     }
   }
 
@@ -156,19 +157,35 @@ impl Art {
     result
   }
 
-  fn transform(&self, component: Component) -> Component {
+  fn transform(&mut self, component: Component) -> Component {
+    // Find in memo first
+    if let Some(res) = self.transform_memo.get(&component) {
+      return res.clone();
+    }
+
+    let mut result: Option<Component> = None;
+    let symmetry = component.symmetry();
+
     // Given a component, split into 8 possibilities
-    for c in component.symmetry() {
+    for c in symmetry.clone() {
       // Convert the component into dot-and-hash
       let c_text = c.text_form();
       // Match with rulebook
-      if let Some(result) = self.rules.get(&c_text) {
-        // Transform component
-        return Component::from(result.clone());
+      if let Some(r) = self.rules.get(&c_text) {
+        result = Some(Component::from(r.clone()));
+        break;
       }
     }
 
-    panic!("Transformation not found");
+    if let Some(res) = result {
+      for c in symmetry {
+        // Memoize component
+        self.transform_memo.insert(c, res.clone());
+      }
+      return res;
+    } else {
+      panic!("Transformation not found");
+    }
   }
 }
 

@@ -64,3 +64,11 @@ struct Infection {
   position: Coordinate<i32>,
   direction: Direction,
 }
+
+impl Infection {
+  fn new(map: &str) {
+    let matrix: Vec<Vec<char>> = map.lines().map(|l| l.chars().collect()).collect();
+    let height = matrix.len();
+    let width = matrix[0].len();
+  }
+}
