@@ -6,22 +6,12 @@ mod tests {
   use super::*;
 
   #[test]
-  fn no1_sample_test() {
+  fn sample_test() {
     let input = indoc!(
       "../.# => ##./#../...
        .#./..#/### => #..#/..../..../#..#"
     );
-    assert_eq!(12, run1(input, 2));
-  }
-
-  #[ignore]
-  #[test]
-  fn no2_sample_test() {
-    let input = indoc!(
-      "../.# => ##./#../...
-       .#./..#/### => #..#/..../..../#..#"
-    );
-    assert_eq!(12, run2(input, 2));
+    assert_eq!(12, run(input, 2));
   }
 
   #[test]
@@ -38,25 +28,20 @@ mod tests {
 
 pub fn no1() -> i32 {
   let input = include_str!("../inputs/input21").trim_right();
-  run1(input, 5)
+  run(input, 5)
 }
 
 pub fn no2() -> i32 {
   let input = include_str!("../inputs/input21").trim_right();
-  run2(input, 5)
+  run(input, 18)
 }
 
-fn run1(rules: &str, iterations: i32) -> i32 {
+fn run(rules: &str, iterations: i32) -> i32 {
   let mut art = Art::new(rules);
   for i in 0..iterations {
     art.next();
   }
   art.count_ons()
-}
-
-fn run2(rules: &str, iterations: i32) -> i32 {
-  let re = Regex::new(r"^(.*) => (.*)$").unwrap();
-  0
 }
 
 struct Art {
