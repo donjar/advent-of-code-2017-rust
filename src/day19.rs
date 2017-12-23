@@ -87,9 +87,21 @@ fn run(input: &str) -> (String, i32) {
 
 fn next(current: Coordinate<usize>, dir: Direction) -> Coordinate<usize> {
   match dir {
-    Direction::Left => Coordinate { x: current.x, y: current.y - 1 },
-    Direction::Up => Coordinate { x: current.x - 1, y: current.y },
-    Direction::Right => Coordinate { x: current.x, y: current.y + 1 },
-    Direction::Down => Coordinate { x: current.x + 1, y: current.y },
+    Direction::Left => Coordinate {
+      x: current.x,
+      y: current.y - 1,
+    },
+    Direction::Up => Coordinate {
+      x: current.x - 1,
+      y: current.y,
+    },
+    Direction::Right => Coordinate {
+      x: current.x,
+      y: current.y + 1,
+    },
+    Direction::Down => Coordinate {
+      x: current.x + 1,
+      y: current.y,
+    },
   }
 }
