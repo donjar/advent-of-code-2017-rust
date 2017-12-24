@@ -30,9 +30,9 @@ mod day19;
 mod day20;
 mod day21;
 mod day22;
-//mod day23;
-//mod day24;
-//mod day25;
+mod day23;
+mod day24;
+mod day25;
 
 use std::env;
 use std::process::exit;
@@ -92,12 +92,12 @@ fn main() {
         (21, 2) => println!("{}", day21::no2()),
         (22, 1) => println!("{}", day22::no1()),
         (22, 2) => println!("{}", day22::no2()),
-        //(23, 1) => println!("{}", day23::no1()),
-        //(23, 2) => println!("{}", day23::no2()),
-        //(24, 1) => println!("{}", day24::no1()),
-        //(24, 2) => println!("{}", day24::no2()),
-        //(25, 1) => println!("{}", day25::no1()),
-        //(25, 2) => println!("{}", day25::no2()),
+        (23, 1) => println!("{}", day23::no1()),
+        (23, 2) => println!("{}", day23::no2()),
+        (24, 1) => println!("{}", day24::no1()),
+        (24, 2) => println!("{}", day24::no2()),
+        (25, 1) => println!("{}", day25::no1()),
+        (25, 2) => println!("{}", day25::no2()),
         _ => println!("Day {} number {} not found", day, no),
       }
     } else {

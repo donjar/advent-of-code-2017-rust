@@ -59,7 +59,7 @@ fn run1(map: &str, iterations: i32) -> i32 {
 
 fn run2(map: &str, iterations: i32) -> i32 {
   let mut i = Infection::new(map);
-  for k in 0..iterations {
+  for _ in 0..iterations {
     i.strong_next();
   }
   i.count_infected
@@ -68,7 +68,7 @@ fn run2(map: &str, iterations: i32) -> i32 {
 enum InfectionStatus {
   Weakened,
   Infected,
-  Flagged
+  Flagged,
 }
 
 struct Infection {
@@ -132,25 +132,25 @@ impl Infection {
         self.status.insert(self.position, InfectionStatus::Flagged);
         self.direction = self.direction.right();
         self.position = self.position.mov(self.direction);
-      },
+      }
       Some(&InfectionStatus::Weakened) => {
         // Infect
         self.status.insert(self.position, InfectionStatus::Infected);
         self.position = self.position.mov(self.direction);
         self.count_infected += 1;
-      },
+      }
       Some(&InfectionStatus::Flagged) => {
         // Clean and reverse
         self.status.remove(&self.position);
         self.direction = self.direction.reverse();
         self.position = self.position.mov(self.direction);
-      },
+      }
       None => {
         // Weaken and turn left
         self.status.insert(self.position, InfectionStatus::Weakened);
         self.direction = self.direction.left();
         self.position = self.position.mov(self.direction);
-      },
+      }
     }
   }
 }
