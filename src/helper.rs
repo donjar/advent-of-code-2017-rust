@@ -65,7 +65,7 @@ fn rev(vector: &mut [i32], start: usize, length: usize) {
   }
 }
 
-#[derive(PartialEq, Eq, Hash, Clone, Copy)]
+#[derive(PartialEq, Eq, Hash, Clone, Copy, Debug)]
 pub struct Coordinate<T> {
   pub x: T,
   pub y: T,
@@ -152,6 +152,27 @@ where
       },
     ]
   }
+
+  pub fn mov(self, direction: Direction) -> Coordinate<T> {
+    match direction {
+      Direction::Left => Coordinate {
+        x: self.x - T::one(),
+        y: self.y,
+      },
+      Direction::Up => Coordinate {
+        x: self.x,
+        y: self.y + T::one(),
+      },
+      Direction::Right => Coordinate {
+        x: self.x + T::one(),
+        y: self.y,
+      },
+      Direction::Down => Coordinate {
+        x: self.x,
+        y: self.y - T::one(),
+      },
+    }
+  }
 }
 
 #[derive(PartialEq, Eq, Clone, Copy)]
@@ -172,12 +193,20 @@ impl Direction {
     ]
   }
 
-  pub fn reverse(self) -> Direction {
+  pub fn left(self) -> Direction {
     match self {
-      Direction::Left => Direction::Right,
-      Direction::Up => Direction::Down,
-      Direction::Right => Direction::Left,
-      Direction::Down => Direction::Up,
+      Direction::Left => Direction::Down,
+      Direction::Up => Direction::Left,
+      Direction::Right => Direction::Up,
+      Direction::Down => Direction::Right,
     }
+  }
+
+  pub fn reverse(self) -> Direction {
+    self.left().left()
+  }
+
+  pub fn right(self) -> Direction {
+    self.left().left().left()
   }
 }
