@@ -37,7 +37,7 @@ pub fn no2() -> i32 {
 
 fn run(rules: &str, iterations: i32) -> i32 {
   let mut art = Art::new(rules);
-  for i in 0..iterations {
+  for _ in 0..iterations {
     art.next();
   }
   art.count_ons()
