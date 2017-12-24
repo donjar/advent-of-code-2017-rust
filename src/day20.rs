@@ -13,19 +13,20 @@ mod tests {
     assert_eq!(0, run1(input));
   }
 
-  #[ignore]
   #[test]
   fn no2_sample_test() {
     let input = indoc!(
-      "p=<3,0,0>, v=<2,0,0>, a=<-1,0,0>
-      p=<4,0,0>, v=<0,0,0>, a=<-2,0,0>"
+      "p=<-6,0,0>, v=<3,0,0>, a=<0,0,0>
+      p=<-4,0,0>, v=<2,0,0>, a=<0,0,0>
+      p=<-2,0,0>, v=<1,0,0>, a=<0,0,0>
+      p=<3,0,0>, v=<-1,0,0>, a=<0,0,0>"
     );
-    assert_eq!(0, run2(input));
+    assert_eq!(1, run2(input));
   }
 
   #[test]
   fn no1_test() {
-    assert_eq!(47, no1());
+    assert_eq!(161, no1());
   }
 
   #[ignore]
