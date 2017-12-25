@@ -90,16 +90,15 @@ fn construct_adj_list(adj_list: &str) -> HashMap<String, HashSet<String>> {
   let mut h = HashMap::new();
 
   for l in adj_list.lines() {
-    for captures in adj_list_regex.captures_iter(l) {
-      let node = captures[1].to_string();
-      let neighbors = captures[2].split(", ");
+    let captures = adj_list_regex.captures(l).unwrap();
+    let node = captures[1].to_string();
+    let neighbors = captures[2].split(", ");
 
-      let mut set = HashSet::new();
-      for n in neighbors {
-        set.insert(n.to_string());
-      }
-      h.insert(node, set);
+    let mut set = HashSet::new();
+    for n in neighbors {
+      set.insert(n.to_string());
     }
+    h.insert(node, set);
   }
 
   h

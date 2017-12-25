@@ -140,7 +140,7 @@ impl<'t> Machine {
   }
 
   fn perform_diagnostic(mut self) -> usize {
-    for i in 0..self.diagnostic {
+    for _ in 0..self.diagnostic {
       self.next();
     }
     self.ones.len()

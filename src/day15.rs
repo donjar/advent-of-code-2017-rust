@@ -45,15 +45,8 @@ fn get_input(input: &str) -> (i64, i64) {
   let first_line = lines.next().unwrap();
   let second_line = lines.next().unwrap();
 
-  let mut a = 0;
-  let mut b = 0;
-  for captures in re_a.captures_iter(first_line) {
-    a = captures[1].parse().expect("Generator A input error");
-  }
-  for captures in re_b.captures_iter(second_line) {
-    b = captures[1].parse().expect("Generator B input error");
-  }
-
+  let a = re_a.captures(first_line).unwrap()[1].parse().expect("Generator A input error");
+  let b = re_b.captures(second_line).unwrap()[1].parse().expect("Generator B input error");
   (a, b)
 }
 

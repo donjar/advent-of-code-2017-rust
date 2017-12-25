@@ -55,13 +55,11 @@ fn run1(data: &str) -> usize {
     .lines()
     .enumerate()
     .min_by_key(|&(_idx, l)| {
-      for cap in re.captures_iter(l) {
-        let x = Equation::form_abs_equation(&cap[1], &cap[4], &cap[7]);
-        let y = Equation::form_abs_equation(&cap[2], &cap[5], &cap[8]);
-        let z = Equation::form_abs_equation(&cap[3], &cap[6], &cap[9]);
-        return Equation::sum(x, y, z);
-      }
-      panic!("No capture");
+      let cap = re.captures(l).unwrap();
+      let x = Equation::form_abs_equation(&cap[1], &cap[4], &cap[7]);
+      let y = Equation::form_abs_equation(&cap[2], &cap[5], &cap[8]);
+      let z = Equation::form_abs_equation(&cap[3], &cap[6], &cap[9]);
+      Equation::sum(x, y, z)
     })
     .expect("No min")
     .0
@@ -81,45 +79,40 @@ fn run2(data: &str) -> usize {
           return true;
         }
 
-        for (cap_current, cap_other) in
-          re.captures_iter(current).zip(re.captures_iter(other))
-        {
-          let current_x = Equation::form_equation(
-            &cap_current[1],
-            &cap_current[4],
-            &cap_current[7],
-          );
-          let other_x = Equation::form_equation(
-            &cap_other[1],
-            &cap_other[4],
-            &cap_other[7],
-          );
-          let current_y = Equation::form_equation(
-            &cap_current[2],
-            &cap_current[5],
-            &cap_current[8],
-          );
-          let other_y = Equation::form_equation(
-            &cap_other[2],
-            &cap_other[5],
-            &cap_other[8],
-          );
-          let current_z = Equation::form_equation(
-            &cap_current[3],
-            &cap_current[6],
-            &cap_current[9],
-          );
-          let other_z = Equation::form_equation(
-            &cap_other[3],
-            &cap_other[6],
-            &cap_other[9],
-          );
+        let cap_current = re.captures(current).unwrap();
+        let cap_other = re.captures(other).unwrap();
+        let current_x = Equation::form_equation(
+          &cap_current[1],
+          &cap_current[4],
+          &cap_current[7],
+        );
+        let other_x = Equation::form_equation(
+          &cap_other[1],
+          &cap_other[4],
+          &cap_other[7],
+        );
+        let current_y = Equation::form_equation(
+          &cap_current[2],
+          &cap_current[5],
+          &cap_current[8],
+        );
+        let other_y = Equation::form_equation(
+          &cap_other[2],
+          &cap_other[5],
+          &cap_other[8],
+        );
+        let current_z = Equation::form_equation(
+          &cap_current[3],
+          &cap_current[6],
+          &cap_current[9],
+        );
+        let other_z = Equation::form_equation(
+          &cap_other[3],
+          &cap_other[6],
+          &cap_other[9],
+        );
 
-          return !(current_x.collide(other_x) || current_y.collide(other_y) ||
-                     current_z.collide(other_z));
-        }
-
-        panic!("No capture");
+        !(current_x.collide(other_x) || current_y.collide(other_y) || current_z.collide(other_z))
       })
     })
     .count()

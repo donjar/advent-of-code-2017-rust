@@ -53,17 +53,15 @@ fn run1(record: &str) -> i32 {
   record
     .lines()
     .map(|l| {
-      for captures in re.captures_iter(l) {
-        let depth = captures[1].parse().expect("Error unwrapping depth");
-        let range = captures[2].parse().expect("Error unwrapping range");
+      let captures = re.captures(l).unwrap();
+      let depth = captures[1].parse().expect("Error unwrapping depth");
+      let range = captures[2].parse().expect("Error unwrapping range");
 
-        if hit(depth, range) {
-          return depth * range;
-        } else {
-          return 0;
-        }
+      if hit(depth, range) {
+        return depth * range;
+      } else {
+        return 0;
       }
-      panic!("Not captured");
     })
     .sum()
 }
@@ -74,13 +72,11 @@ fn run2(record: &str) -> i32 {
   let all_divs: Vec<(_, _)> = record
     .lines()
     .map(|l| {
-      for captures in re.captures_iter(l) {
-        let depth: i32 = captures[1].parse().expect("Error unwrapping depth");
-        let range: i32 = captures[2].parse().expect("Error unwrapping range");
-        let modulo = 2 * (range - 1);
-        return ((modulo - (depth % modulo)) % modulo, modulo);
-      }
-      panic!("Not captured");
+      let captures = re.captures(l).unwrap();
+      let depth: i32 = captures[1].parse().expect("Error unwrapping depth");
+      let range: i32 = captures[2].parse().expect("Error unwrapping range");
+      let modulo = 2 * (range - 1);
+      return ((modulo - (depth % modulo)) % modulo, modulo);
     })
     .collect();
 

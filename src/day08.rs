@@ -88,7 +88,7 @@ impl Cpu {
         Regex::new(r"^(.+) dec (.+) if (.+)$").unwrap();
     }
 
-    for captures in INCREMENT_REGEX.captures_iter(ins) {
+    if let Some(captures) = INCREMENT_REGEX.captures(ins) {
       let register = &captures[1];
       let increment: Result<i32, _> = captures[2].parse();
       let condition = &captures[3];
@@ -98,7 +98,7 @@ impl Cpu {
       }
     }
 
-    for captures in DECREMENT_REGEX.captures_iter(ins) {
+    if let Some(captures) = DECREMENT_REGEX.captures(ins) {
       let register = &captures[1];
       let decrement: Result<i32, _> = captures[2].parse();
       let condition = &captures[3];
@@ -123,25 +123,23 @@ impl Cpu {
         Regex::new(r"^(.+) (.+) (-?[[:digit:]]+)$").unwrap();
     }
 
-    for captures in RE.captures_iter(condition) {
-      let lhs = *self.registers.entry(captures[1].to_string()).or_insert(0);
-      let operator = &captures[2];
-      if let Err(_) = captures[3].parse::<i32>() {
-        return Err(());
-      }
-      let rhs: i32 = captures[3].parse().unwrap();
-
-      match operator {
-        ">=" => return Ok(lhs >= rhs),
-        ">" => return Ok(lhs > rhs),
-        "<=" => return Ok(lhs <= rhs),
-        "<" => return Ok(lhs < rhs),
-        "==" => return Ok(lhs == rhs),
-        "!=" => return Ok(lhs != rhs),
-        _ => return Err(()),
-      }
+    let captures = RE.captures(condition).unwrap();
+    let lhs = *self.registers.entry(captures[1].to_string()).or_insert(0);
+    let operator = &captures[2];
+    if let Err(_) = captures[3].parse::<i32>() {
+      return Err(());
     }
-    Err(())
+    let rhs: i32 = captures[3].parse().unwrap();
+
+    match operator {
+      ">=" => return Ok(lhs >= rhs),
+      ">" => return Ok(lhs > rhs),
+      "<=" => return Ok(lhs <= rhs),
+      "<" => return Ok(lhs < rhs),
+      "==" => return Ok(lhs == rhs),
+      "!=" => return Ok(lhs != rhs),
+      _ => return Err(()),
+    }
   }
 
   fn get_max(&self) -> i32 {

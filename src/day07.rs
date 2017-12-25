@@ -76,12 +76,11 @@ fn run1(list: &str) -> String {
   let mut top_programs = HashSet::new();
 
   for line in list.lines() {
-    for cap in re.captures_iter(line) {
-      all_programs.insert(cap[1].to_string());
+    let cap = re.captures(line).unwrap();
+    all_programs.insert(cap[1].to_string());
 
-      for prog in cap[3].split(", ") {
-        top_programs.insert(prog.to_string());
-      }
+    for prog in cap[3].split(", ") {
+      top_programs.insert(prog.to_string());
     }
   }
 
@@ -125,11 +124,10 @@ fn get_children(list: &str, program: String) -> Vec<String> {
   }
 
   for line in list.lines() {
-    for cap in RE.captures_iter(line) {
-      let name = cap[1].to_string();
-      if name == program {
-        return cap[4].split(", ").map(|s| s.to_string()).collect();
-      }
+    let cap = RE.captures(line).unwrap();
+    let name = cap[1].to_string();
+    if name == program {
+      return cap[4].split(", ").map(|s| s.to_string()).collect();
     }
   }
 
@@ -143,19 +141,18 @@ fn get_sum(list: &str, program: String) -> i32 {
   }
 
   for line in list.lines() {
-    for cap in RE.captures_iter(line) {
-      let name = cap[1].to_string();
-      if name == program {
-        let mut sum = cap[2].parse().unwrap();
+    let cap = RE.captures(line).unwrap();
+    let name = cap[1].to_string();
+    if name == program {
+      let mut sum = cap[2].parse().unwrap();
 
-        for s in cap[4].split(", ") {
-          if !s.is_empty() {
-            sum += get_sum(list, s.to_string());
-          }
+      for s in cap[4].split(", ") {
+        if !s.is_empty() {
+          sum += get_sum(list, s.to_string());
         }
-
-        return sum;
       }
+
+      return sum;
     }
   }
 
@@ -169,11 +166,10 @@ fn get_number(list: &str, program: String) -> i32 {
   }
 
   for line in list.lines() {
-    for cap in RE.captures_iter(line) {
-      let name = cap[1].to_string();
-      if name == program {
-        return cap[2].parse().unwrap();
-      }
+    let cap = RE.captures(line).unwrap();
+    let name = cap[1].to_string();
+    if name == program {
+      return cap[2].parse().unwrap();
     }
   }
 

@@ -60,9 +60,8 @@ impl Art {
     let mut rules_map = HashMap::new();
 
     for rule in rule_list.lines() {
-      for cap in re.captures_iter(rule) {
-        rules_map.insert(String::from(&cap[1]), String::from(&cap[2]));
-      }
+      let cap = re.captures(rule).unwrap();
+      rules_map.insert(String::from(&cap[1]), String::from(&cap[2]));
     }
 
     let picture = vec![
