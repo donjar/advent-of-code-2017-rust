@@ -80,7 +80,7 @@ impl SoundTablet {
       registers: HashMap::new(),
       instructions: instructions
         .lines()
-        .map(|l| l.split(" ").map(|c| c.to_string()).collect())
+        .map(|l| l.split(" ").map(String::from).collect())
         .collect(),
       counter: 0,
       last_sound: None,
@@ -169,7 +169,7 @@ impl MqTablet {
       queue1: VecDeque::new(),
       instructions: instructions
         .lines()
-        .map(|l| l.split(" ").map(|c| c.to_string()).collect())
+        .map(|l| l.split(" ").map(String::from).collect())
         .collect(),
       counter0: 0,
       counter1: 0,

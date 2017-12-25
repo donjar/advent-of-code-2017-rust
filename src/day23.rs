@@ -55,7 +55,7 @@ impl Coprocessor {
       registers,
       instructions: instructions
         .lines()
-        .map(|l| l.split(" ").map(|c| c.to_string()).collect())
+        .map(|l| l.split(" ").map(String::from).collect())
         .collect(),
       counter: 0,
     }

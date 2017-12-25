@@ -127,7 +127,7 @@ fn get_children(list: &str, program: String) -> Vec<String> {
     let cap = RE.captures(line).unwrap();
     let name = cap[1].to_string();
     if name == program {
-      return cap[4].split(", ").map(|s| s.to_string()).collect();
+      return cap[4].split(", ").map(String::from).collect();
     }
   }
 
