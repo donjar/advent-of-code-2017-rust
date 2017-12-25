@@ -5,10 +5,6 @@ pub trait DataSplitExt {
   fn split_into_data<T: FromStr>(&self) -> Vec<T>;
 }
 
-pub trait KnotHashExt {
-  fn knot_hash(&self) -> String;
-}
-
 impl<'a> DataSplitExt for &'a str {
   fn split_into_data<T: FromStr>(&self) -> Vec<T> {
     self
@@ -16,6 +12,10 @@ impl<'a> DataSplitExt for &'a str {
       .filter_map(|e| e.parse().ok())
       .collect::<Vec<T>>()
   }
+}
+
+pub trait KnotHashExt {
+  fn knot_hash(&self) -> String;
 }
 
 impl<'a> KnotHashExt for &'a str {
