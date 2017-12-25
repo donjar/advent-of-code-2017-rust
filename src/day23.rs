@@ -4,43 +4,9 @@ use std::collections::HashMap;
 mod tests {
   use super::*;
 
-  #[ignore]
-  #[test]
-  fn no1_sample_test() {
-    let input = indoc!(
-      "set a 1
-       add a 2
-       mul a a
-       mod a 5
-       snd a
-       set a 0
-       rcv a
-       jgz a -1
-       set a 1
-       jgz a -2"
-    );
-    assert_eq!(4, run1(input));
-  }
-
-  #[ignore]
-  #[test]
-  fn no2_sample_test() {
-    let input = indoc!(
-      "snd 1
-       snd 2
-       snd p
-       rcv a
-       rcv b
-       rcv c
-       rcv d"
-    );
-    assert_eq!(3, run2(input));
-  }
-
-  #[ignore]
   #[test]
   fn no1_test() {
-    assert_eq!(1187, no1());
+    assert_eq!(9409, no1());
   }
 
   #[ignore]
@@ -50,36 +16,43 @@ mod tests {
   }
 }
 
-pub fn no1() -> i64 {
+pub fn no1() -> i32 {
   let input = include_str!("../inputs/input23").trim_right();
   run1(input)
 }
 
-pub fn no2() -> i64 {
+pub fn no2() -> i32 {
   let input = include_str!("../inputs/input23").trim_right();
   run2(input)
 }
 
-fn run1(input: &str) -> i64 {
-  let mut t = Coprocessor::new(input.to_string());
-  t.run().unwrap()
+fn run1(input: &str) -> i32 {
+  let mut t = Coprocessor::new(input.to_string(), 0);
+  t.run()
 }
 
-fn run2(input: &str) -> i64 {
-  let mut t = Coprocessor::new(input.to_string());
-  t.run().unwrap()
+fn run2(input: &str) -> i32 {
+  let mut t = Coprocessor::new(input.to_string(), 1);
+  t.run();
+  t.get_value(String::from("h"))
 }
 
 struct Coprocessor {
-  registers: HashMap<String, i64>,
+  registers: HashMap<String, i32>,
   instructions: Vec<Vec<String>>,
-  counter: i64,
+  counter: i32,
 }
 
 impl Coprocessor {
-  fn new(instructions: String) -> Coprocessor {
+  fn new(instructions: String, a_value: i32) -> Coprocessor {
+    let mut registers = HashMap::new();
+    registers.insert(String::from("a"), a_value);
+    for &r in ["b", "c", "d", "e", "f", "g", "h"].iter() {
+      registers.insert(String::from(r), 0);
+    }
+
     Coprocessor {
-      registers: HashMap::new(),
+      registers,
       instructions: instructions
         .lines()
         .map(|l| l.split(" ").map(|c| c.to_string()).collect())
@@ -88,8 +61,13 @@ impl Coprocessor {
     }
   }
 
-  fn run(&mut self) -> Option<i64> {
+  fn run(&mut self) -> i32 {
+    let mut mul_count = 0;
     loop {
+      if self.counter < 0 || self.counter as usize >= self.instructions.len() {
+        return mul_count;
+      }
+
       let current = &self.instructions[self.counter as usize];
       let first = current[1].clone();
 
@@ -107,6 +85,7 @@ impl Coprocessor {
           let second = self.get_value(current[2].clone());
           let current = *self.registers.get(&first).unwrap_or(&0);
           self.registers.insert(first, current * second);
+          mul_count += 1;
         }
         "jnz" => {
           if self.get_value(first) != 0 {
@@ -122,7 +101,7 @@ impl Coprocessor {
     }
   }
 
-  fn get_value(&self, argument: String) -> i64 {
+  fn get_value(&self, argument: String) -> i32 {
     if let Some(val) = argument.parse().ok() {
       val
     } else {
