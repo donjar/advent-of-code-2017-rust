@@ -1,4 +1,5 @@
 use regex::Regex;
+use std::collections::HashMap;
 
 #[cfg(test)]
 mod tests {
@@ -29,10 +30,9 @@ mod tests {
     assert_eq!(161, no1());
   }
 
-  #[ignore]
   #[test]
   fn no2_test() {
-    assert_eq!(213, no2());
+    assert_eq!(438, no2());
   }
 }
 
@@ -59,7 +59,9 @@ fn run1(data: &str) -> usize {
       let x = Equation::form_abs_equation(&cap[1], &cap[4], &cap[7]);
       let y = Equation::form_abs_equation(&cap[2], &cap[5], &cap[8]);
       let z = Equation::form_abs_equation(&cap[3], &cap[6], &cap[9]);
-      Equation::sum(x, y, z)
+
+      let res = Equation::sum(x, y, z);
+      res
     })
     .expect("No min")
     .0
@@ -69,48 +71,70 @@ fn run2(data: &str) -> usize {
   let re = Regex::new(
     r"^p=<(.*),(.*),(.*)>, v=<(.*),(.*),(.*)>, a=<(.*),(.*),(.*)>$",
   ).expect("Regex error");
-  let mut particles = data.lines();
+  let mut particles: Vec<((i32, i32, i32), (i32, i32, i32), (i32, i32, i32))> =
+    data.lines().map(|current| {
+      let cap = re.captures(&current).unwrap();
+      let x = (cap[1].parse().unwrap(),
+               cap[4].parse().unwrap(),
+               cap[7].parse().unwrap());
+      let y = (cap[2].parse().unwrap(),
+               cap[5].parse().unwrap(),
+               cap[8].parse().unwrap());
+      let z = (cap[3].parse().unwrap(),
+               cap[6].parse().unwrap(),
+               cap[9].parse().unwrap());
+      (x, y, z)
+  }).collect();
 
-  particles
-    .clone()
-    .filter(|&current| {
-      particles.all(|other| {
-        if current == other {
-          return true;
-        }
+  for i in 0..1000 {
+    // TODO fix this
+    remove_collisions(&mut particles);
+    advance(&mut particles);
+  }
 
-        let cap_current = re.captures(current).unwrap();
-        let cap_other = re.captures(other).unwrap();
-        let current_x = Equation::form_equation(
-          &cap_current[1],
-          &cap_current[4],
-          &cap_current[7],
-        );
-        let other_x =
-          Equation::form_equation(&cap_other[1], &cap_other[4], &cap_other[7]);
-        let current_y = Equation::form_equation(
-          &cap_current[2],
-          &cap_current[5],
-          &cap_current[8],
-        );
-        let other_y =
-          Equation::form_equation(&cap_other[2], &cap_other[5], &cap_other[8]);
-        let current_z = Equation::form_equation(
-          &cap_current[3],
-          &cap_current[6],
-          &cap_current[9],
-        );
-        let other_z =
-          Equation::form_equation(&cap_other[3], &cap_other[6], &cap_other[9]);
-
-        !(current_x.collide(other_x) || current_y.collide(other_y) ||
-            current_z.collide(other_z))
-      })
-    })
-    .count()
+  particles.len()
 }
 
-#[derive(Ord, PartialOrd, PartialEq, Eq)]
+fn remove_collisions(
+  particles: &mut Vec<((i32, i32, i32), (i32, i32, i32), (i32, i32, i32))>,
+) {
+  let mut map = HashMap::new();
+
+  for p in particles.iter().cloned() {
+    *map.entry(((p.0).0, (p.1).0, (p.2).0)).or_insert(0) += 1;
+  }
+
+  let dups: Vec<(i32, i32, i32)> = map
+    .iter()
+    .filter(|&(_k, &v)| v > 1)
+    .map(|(&k, _v)| k)
+    .collect();
+
+  let mut i = 0;
+  while i < particles.len() {
+    let p = particles[i];
+    if dups.contains(&((p.0).0, (p.1).0, (p.2).0)) {
+      particles.remove(i);
+    } else {
+      i += 1;
+    }
+  }
+}
+
+fn advance(
+  particles: &mut Vec<((i32, i32, i32), (i32, i32, i32), (i32, i32, i32))>,
+) {
+  for p in particles.iter_mut() {
+    (p.0).1 += (p.0).2;
+    (p.1).1 += (p.1).2;
+    (p.2).1 += (p.2).2;
+    (p.0).0 += (p.0).1;
+    (p.1).0 += (p.1).1;
+    (p.2).0 += (p.2).1;
+  }
+}
+
+#[derive(Ord, PartialOrd, PartialEq, Eq, Debug)]
 struct Equation {
   a: i32,
   b: i32,
@@ -118,24 +142,12 @@ struct Equation {
 }
 
 impl Equation {
-  fn form_equation(pos: &str, vel: &str, acc: &str) -> Equation {
-    let p: i32 = pos.parse().expect("Position parse error");
-    let v: i32 = vel.parse().expect("Position parse error");
-    let a: i32 = acc.parse().expect("Position parse error");
-
-    Equation {
-      a: a,
-      b: 2 * v + a,
-      c: 2 * p,
-    }
-  }
-
   fn form_abs_equation(pos: &str, vel: &str, acc: &str) -> Equation {
     let p: i32 = pos.parse().expect("Position parse error");
     let v: i32 = vel.parse().expect("Position parse error");
     let a: i32 = acc.parse().expect("Position parse error");
 
-    if a > 0 {
+    if a > 0 || (a == 0 && v > 0) || (a == 0 && v == 0 && p > 0) {
       Equation {
         a: a,
         b: 2 * v + a,
@@ -156,34 +168,5 @@ impl Equation {
       b: x.b + y.b + z.b,
       c: x.c + y.c + z.c,
     }
-  }
-
-  fn collide(&self, other: Equation) -> bool {
-    let a = self.a - other.a;
-    let b = self.b - other.b;
-    let c = self.c - other.c;
-
-    if a == 0 {
-      if b == 0 {
-        return c == 0;
-      } else {
-        // x = -c / b
-        return c % b == 0 && b * c <= 0;
-      }
-    }
-
-    let d_squared = b * b - 4 * a * c;
-    if d_squared < 0 {
-      return false; // no roots
-    }
-    let d = (d_squared as f32).sqrt() as i32;
-    if d * d != d_squared {
-      return false; // not exact square
-    }
-
-    let first_root_2a = -1 * b + d;
-    let second_root_2a = -1 * b - d;
-    first_root_2a * a >= 0 && second_root_2a * a >= 0 &&
-      first_root_2a % (2 * a) == 0 && second_root_2a % (2 * a) == 0
   }
 }
