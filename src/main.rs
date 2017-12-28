@@ -97,7 +97,6 @@ fn main() {
         (24, 1) => println!("{}", day24::no1()),
         (24, 2) => println!("{}", day24::no2()),
         (25, 1) => println!("{}", day25::no1()),
-        (25, 2) => println!("{}", day25::no2()),
         _ => println!("Day {} number {} not found", day, no),
       }
     } else {

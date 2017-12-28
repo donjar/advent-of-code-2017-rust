@@ -17,7 +17,6 @@ mod tests {
     assert_eq!(5587, run1(input, 10000));
   }
 
-  #[ignore]
   #[test]
   fn no2_sample_test() {
     let input = indoc!(
@@ -34,7 +33,6 @@ mod tests {
     assert_eq!(5460, no1());
   }
 
-  #[ignore]
   #[test]
   fn no2_test() {
     assert_eq!(2511702, no2());

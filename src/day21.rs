@@ -19,7 +19,6 @@ mod tests {
     assert_eq!(120, no1());
   }
 
-  #[ignore]
   #[test]
   fn no2_test() {
     assert_eq!(2204099, no2());

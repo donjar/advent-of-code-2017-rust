@@ -52,7 +52,6 @@ mod tests {
     assert_eq!("hlqnsbe", no1());
   }
 
-  #[ignore]
   #[test]
   fn no2_test() {
     assert_eq!(1993, no2());

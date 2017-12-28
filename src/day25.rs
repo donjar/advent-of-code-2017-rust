@@ -35,29 +35,9 @@ mod tests {
     assert_eq!(3, run1(input));
   }
 
-  #[ignore]
-  #[test]
-  fn no2_sample_test() {
-    assert_eq!(
-      9,
-      run2(indoc!(
-        "5 9 2 8
-         9 4 7 3
-         3 8 6 5"
-      ))
-    );
-  }
-
-  #[ignore]
   #[test]
   fn no1_test() {
     assert_eq!(2832, no1());
-  }
-
-  #[ignore]
-  #[test]
-  fn no2_test() {
-    assert_eq!(191, no2());
   }
 }
 
@@ -66,17 +46,8 @@ pub fn no1() -> usize {
   run1(input)
 }
 
-pub fn no2() -> i32 {
-  let input = include_str!("../inputs/input25").trim_right();
-  run2(input)
-}
-
 fn run1(input: &str) -> usize {
   Machine::new(input).perform_diagnostic()
-}
-
-fn run2(input: &str) -> i32 {
-  0
 }
 
 #[derive(Debug)]

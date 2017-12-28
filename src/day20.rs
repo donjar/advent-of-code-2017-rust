@@ -86,8 +86,8 @@ fn run2(data: &str) -> usize {
       (x, y, z)
   }).collect();
 
-  for i in 0..1000 {
-    // TODO fix this
+  for _ in 0..1000 {
+    // TODO use a more proper method instead of looping 1k times
     remove_collisions(&mut particles);
     advance(&mut particles);
   }

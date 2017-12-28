@@ -36,7 +36,6 @@ mod tests {
     );
   }
 
-  #[ignore]
   #[test]
   fn no1_test() {
     assert_eq!(1940, no1());
