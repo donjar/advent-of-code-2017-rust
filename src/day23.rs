@@ -9,10 +9,9 @@ mod tests {
     assert_eq!(9409, no1());
   }
 
-  #[ignore]
   #[test]
   fn no2_test() {
-    assert_eq!(5969, no2());
+    assert_eq!(913, no2());
   }
 }
 
@@ -22,8 +21,7 @@ pub fn no1() -> i32 {
 }
 
 pub fn no2() -> i32 {
-  let input = include_str!("../inputs/input23").trim_right();
-  run2(input)
+  run2()
 }
 
 fn run1(input: &str) -> i32 {
@@ -31,10 +29,43 @@ fn run1(input: &str) -> i32 {
   t.run()
 }
 
-fn run2(input: &str) -> i32 {
-  let mut t = Coprocessor::new(input.to_string(), 1);
-  t.run();
-  t.get_value(String::from("h"))
+fn run2() -> i32 {
+  let inc = 17;
+  let total = 1001;
+
+  let b = 99 * 100 + 100000;
+  let c = b + inc * total;
+  let m = b % inc;
+  let mut ps = 0;
+
+  for p in primes(c) {
+    if p >= b && p % inc == m {
+      ps += 1;
+    }
+  }
+
+  total - ps
+}
+
+fn primes(below: i32) -> Vec<i32> {
+  let mut res = Vec::new();
+
+  for i in 2..below {
+    let mut is_prime = true;
+
+    for p in res.iter() {
+      if i % p == 0 {
+        is_prime = false;
+        break;
+      }
+    }
+
+    if is_prime {
+      res.push(i);
+    }
+  }
+
+  res
 }
 
 struct Coprocessor {
