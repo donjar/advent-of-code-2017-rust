@@ -92,8 +92,18 @@ impl<'t> Machine {
   fn new(blueprint: &str) -> Machine {
     let mut lines = blueprint.lines();
 
-    let state = Machine::capture_next_line(&mut lines, r"^Begin in state (.)\.$").unwrap().chars().next().unwrap();
-    let diagnostic = Machine::capture_next_line(&mut lines, r"^Perform a diagnostic checksum after (\d+) steps.$").unwrap().parse().unwrap();
+    let state =
+      Machine::capture_next_line(&mut lines, r"^Begin in state (.)\.$")
+        .unwrap()
+        .chars()
+        .next()
+        .unwrap();
+    let diagnostic = Machine::capture_next_line(
+      &mut lines,
+      r"^Perform a diagnostic checksum after (\d+) steps.$",
+    ).unwrap()
+      .parse()
+      .unwrap();
 
     let mut instructions = HashMap::new();
 
@@ -101,19 +111,43 @@ impl<'t> Machine {
     lines.next();
 
     loop {
-      if let Some(curr_state) = Machine::capture_next_line(&mut lines, r"^In state (.):$").map(|i| i.chars().next().unwrap()) {
+      if let Some(curr_state) = Machine::capture_next_line(
+        &mut lines,
+        r"^In state (.):$",
+      ).map(|i| i.chars().next().unwrap())
+      {
         loop {
-          if let Some(curr_value) = Machine::capture_next_line(&mut lines, r"^  If the current value is (\d+):$").map(|i| i == "1") {
-            let new_value = Machine::capture_next_line(&mut lines, r"^    - Write the value (\d+)\.$").unwrap() == "1";
-            let direction =
-              if Machine::capture_next_line(&mut lines, r"^    - Move one slot to the (.+)\.$").unwrap() == "right" {
-                1
-              } else {
-                -1
-              };
-            let next_state = Machine::capture_next_line(&mut lines, r"^    - Continue with state (.)\.$").unwrap().chars().next().unwrap();
+          if let Some(curr_value) = Machine::capture_next_line(
+            &mut lines,
+            r"^  If the current value is (\d+):$",
+          ).map(|i| i == "1")
+          {
+            let new_value = Machine::capture_next_line(
+              &mut lines,
+              r"^    - Write the value (\d+)\.$",
+            ).unwrap() == "1";
+            let direction = if Machine::capture_next_line(
+              &mut lines,
+              r"^    - Move one slot to the (.+)\.$",
+            ).unwrap() == "right"
+            {
+              1
+            } else {
+              -1
+            };
+            let next_state = Machine::capture_next_line(
+              &mut lines,
+              r"^    - Continue with state (.)\.$",
+            ).unwrap()
+              .chars()
+              .next()
+              .unwrap();
 
-            instructions.insert((curr_state, curr_value), (new_value, direction, next_state));
+            instructions.insert((curr_state, curr_value), (
+              new_value,
+              direction,
+              next_state,
+            ));
           } else {
             break;
           }
@@ -123,7 +157,13 @@ impl<'t> Machine {
       }
     }
 
-    Machine { position: 0, ones: HashSet::new(), state, diagnostic, instructions }
+    Machine {
+      position: 0,
+      ones: HashSet::new(),
+      state,
+      diagnostic,
+      instructions,
+    }
   }
 
   fn capture_next_line(iter: &'t mut Lines, regex_str: &str) -> Option<String> {
@@ -147,7 +187,12 @@ impl<'t> Machine {
   }
 
   fn next(&mut self) {
-    if let Some(&(val, dir, s)) = self.instructions.get(&(self.state, self.ones.contains(&self.position))) {
+    if let Some(&(val, dir, s)) =
+      self.instructions.get(&(
+        self.state,
+        self.ones.contains(&self.position),
+      ))
+    {
       if val {
         self.ones.insert(self.position);
       } else {

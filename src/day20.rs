@@ -86,33 +86,25 @@ fn run2(data: &str) -> usize {
           &cap_current[4],
           &cap_current[7],
         );
-        let other_x = Equation::form_equation(
-          &cap_other[1],
-          &cap_other[4],
-          &cap_other[7],
-        );
+        let other_x =
+          Equation::form_equation(&cap_other[1], &cap_other[4], &cap_other[7]);
         let current_y = Equation::form_equation(
           &cap_current[2],
           &cap_current[5],
           &cap_current[8],
         );
-        let other_y = Equation::form_equation(
-          &cap_other[2],
-          &cap_other[5],
-          &cap_other[8],
-        );
+        let other_y =
+          Equation::form_equation(&cap_other[2], &cap_other[5], &cap_other[8]);
         let current_z = Equation::form_equation(
           &cap_current[3],
           &cap_current[6],
           &cap_current[9],
         );
-        let other_z = Equation::form_equation(
-          &cap_other[3],
-          &cap_other[6],
-          &cap_other[9],
-        );
+        let other_z =
+          Equation::form_equation(&cap_other[3], &cap_other[6], &cap_other[9]);
 
-        !(current_x.collide(other_x) || current_y.collide(other_y) || current_z.collide(other_z))
+        !(current_x.collide(other_x) || current_y.collide(other_y) ||
+            current_z.collide(other_z))
       })
     })
     .count()

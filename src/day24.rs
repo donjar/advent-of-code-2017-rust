@@ -116,7 +116,10 @@ fn get_max_connection(ports: Vec<(i32, i32)>, start: i32) -> i32 {
     .unwrap_or(0)
 }
 
-fn get_max_connection_with_len(ports: Vec<(i32, i32)>, start: i32) -> (i32, i32) {
+fn get_max_connection_with_len(
+  ports: Vec<(i32, i32)>,
+  start: i32,
+) -> (i32, i32) {
   ports
     .iter()
     .filter_map(|p| {
